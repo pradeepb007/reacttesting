@@ -1,0 +1,51 @@
+{
+  "subsector": [
+    {
+      "id": "1",
+      "name": "Sub Sector 1"
+    },
+    {
+      "id": "2",
+      "name": "Sub Sector 2"
+    }
+  ],
+  "brand": [
+    {
+      "id": "1",
+      "name": "Brand 1"
+    },
+    {
+      "id": "2",
+      "name": "Brand 2"
+    }
+  ],
+  "category": [
+    {
+      "id": "1",
+      "name": "Category 1"
+    },
+    {
+      "id": "2",
+      "name": "Category 2"
+    }
+  ],
+  "tabledata": [
+    {
+      "id": "1",
+      "custID": "1234",
+      "dateFrom": "03/08/2024",
+      "dateTo": "04/30/2024",
+      "dcID": 1234,
+      "storeID": 1,
+      "fraction": 0.2,
+      "category": "Category 2",
+      "subSector": "Sub Sector 2",
+      "brand": "Brand 2",
+      "gtin": 1234,
+      "createdBy": "admin",
+      "createdDate": "03/03/2024",
+      "modifiedBy": "admin",
+      "modifiedDate": "03/03/2024"
+    }
+  ]
+}

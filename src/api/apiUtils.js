@@ -1,6 +1,6 @@
 // utils/apiUtils.js
 import axios from "axios";
-import { BASE_API_URL } from "./constants";
+import { BASE_API_URL } from "../utils/constants";
 
 const api = axios.create({
   baseURL: BASE_API_URL,
@@ -22,6 +22,7 @@ export const performApiRequest = async (url, method = "GET", data = null) => {
 
 export const handleResponse = (response) => {
   if (response.status >= 200 && response.status < 300) {
+    console.log(response.data);
     return response.data;
   } else {
     throw new Error(`HTTP error! Status: ${response.status}`);

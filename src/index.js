@@ -10,9 +10,11 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import Mapping from "./components/Mapping/Mapping";
+import Mapping from "./pages/Mapping";
 import Home from "./components/Home/Home";
 import { ErrorBoundary } from "react-error-boundary";
+import { Provider } from "react-redux";
+import store from "./store/store";
 const ErrorFallback = ({ error }) => {
   return (
     <div style={{ color: "red" }}>
@@ -36,7 +38,9 @@ root.render(
   <React.StrictMode>
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ThemeProvider>
-        <RouterProvider router={router} />
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
       </ThemeProvider>
     </ErrorBoundary>
   </React.StrictMode>
