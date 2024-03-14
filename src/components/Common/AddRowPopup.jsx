@@ -61,33 +61,27 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
   const handleChange = (name, value) => {
     let formattedValue = value;
     if (name === "dateFrom" || name === "dateTo") {
-      formattedValue = moment(value, "YYYY-MM-DD").format("YYYY-MM-DD");
+      formattedValue = moment(value, "YYYY-MM-DD").format("MM/DD/YYYY");
     }
     setFormData({ ...formData, [name]: formattedValue });
   };
 
-  // const handleChange = (name, value) => {
-  //   let formattedValue = value;
-  //   if (name === "dateFrom" || name === "dateTo") {
-  //     formattedValue = moment(value, "YYYY-MM-DD").format("MM/DD/YYYY");
-  //   }
-  //   setFormData({ ...formData, [name]: formattedValue });
-  // };
+  const handleSelectChange = (name, value) => {
+    handleChange(name, value);
+  };
 
-  // const handleSelectChange = (name, value) => {
-  //   handleChange(name, value);
-  // };
-
-  // const handleFiledChange = (e) => {
-  //   const { name, value } = e.target;
-  //   handleChange(name, value);
-  // };
+  const handleFiledChange = (e) => {
+    const { name, value } = e.target;
+    handleChange(name, value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("handlesubmit clicked");
     console.log(rowData);
     if (rowData) {
+      formData.modifiedDate = currentDate;
+      formData.modifiedBy = rowData.modifiedBy;
       console.log("updateRowData called");
       await dispatch(updateRowData(rowData.id, formData));
       onClose();
@@ -111,8 +105,7 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
               size="md"
               required
               value={formData.custID}
-              //onChange={handleFiledChange}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleFiledChange}
             />
             <Input
               label="dateFrom"
@@ -120,7 +113,7 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
               type="date"
               size="md"
               value={formData.dateFrom}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleFiledChange}
             />
             <Input
               label="dateTo"
@@ -128,7 +121,7 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
               type="date"
               size="md"
               value={formData.dateTo}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleFiledChange}
             />
             <Input
               label="dcID"
@@ -137,7 +130,7 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
               size="md"
               required
               value={formData.dcID}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleFiledChange}
             />
             <Input
               label="storeID"
@@ -146,7 +139,7 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
               size="md"
               required
               value={formData.storeID}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleFiledChange}
             />
             <Input
               label="fraction"
@@ -155,12 +148,12 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
               size="md"
               required
               value={formData.fraction}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleFiledChange}
             />
             <Select
               label="SubSector"
               name="subsector"
-              value={formData.subSector}
+              value={value}
               onChange={(value) => handleChange("subSector", value)}
             >
               {subsectors?.map((subsector) => (
@@ -172,7 +165,7 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
             <Select
               label="category"
               name="category"
-              value={formData.category}
+              value={value}
               onChange={(value) => handleChange("category", value)}
               required
             >
@@ -185,7 +178,7 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
             <Select
               label="brand"
               name="brand"
-              value={formData.brand}
+              value={value}
               onChange={(value) => handleChange("brand", value)}
             >
               {brands?.map((brand) => (

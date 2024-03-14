@@ -32,7 +32,7 @@
   "tabledata": [
     {
       "id": "1",
-      "custID": "1234",
+      "custID": "123444",
       "dateFrom": "03/08/2024",
       "dateTo": "04/30/2024",
       "dcID": 1234,
@@ -45,7 +45,7 @@
       "createdBy": "admin",
       "createdDate": "03/03/2024",
       "modifiedBy": "admin",
-      "modifiedDate": "03/03/2024"
+      "modifiedDate": "03/14/2024"
     }
   ]
 }
