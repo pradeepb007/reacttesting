@@ -11,7 +11,7 @@ function Mapping() {
     //     <TableData />
     //   </Suspense>
     // </ErrorBoundary>
-    <TestApp />
+    <TableData />
   );
 }
 
