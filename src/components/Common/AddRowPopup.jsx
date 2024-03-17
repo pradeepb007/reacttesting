@@ -112,16 +112,16 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
               name="dateFrom"
               type="date"
               size="md"
-              value={formData.dateFrom}
-              onChange={handleFiledChange}
+              value={rowData ? formData.dateFrom : ""}
+              // onChange={handleFiledChange}
             />
             <Input
               label="dateTo"
               name="dateTo"
               type="date"
               size="md"
-              value={formData.dateTo}
-              onChange={handleFiledChange}
+              value={rowData ? formData.dateTo : ""}
+              //onChange={handleFiledChange}
             />
             <Input
               label="dcID"
@@ -153,8 +153,8 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
             <Select
               label="SubSector"
               name="subsector"
-              value={value}
-              onChange={(value) => handleChange("subSector", value)}
+              value={formData.subSector}
+              // onChange={(val) => handleSelectChange("subSector", val)}
             >
               {subsectors?.map((subsector) => (
                 <Option key={subsector.id} value={subsector.name}>
@@ -165,8 +165,8 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
             <Select
               label="category"
               name="category"
-              value={value}
-              onChange={(value) => handleChange("category", value)}
+              value={formData.category}
+              //onChange={(value) => handleSelectChange("category", value)}
               required
             >
               {categories?.map((category) => (
@@ -178,8 +178,8 @@ const AddRowPopup = ({ isPopupOpen, onClose, onOpen, rowData }) => {
             <Select
               label="brand"
               name="brand"
-              value={value}
-              onChange={(value) => handleChange("brand", value)}
+              value={formData.brand}
+              //onChange={(value) => handleSelectChange("brand", value)}
             >
               {brands?.map((brand) => (
                 <Option key={brand.id} value={brand.name}>

@@ -34,7 +34,7 @@ export const updateRowData = (id, rowData) => async (dispatch) => {
 
 export const deleteRowData = (id) => async (dispatch) => {
   try {
-    const response = await performApiRequest(`/tabledata/${id}`, "DELETE");
+    await performApiRequest(`/tabledata/${id}`, "DELETE");
     dispatch(deleteStoreData(id));
   } catch (error) {
     throw error;

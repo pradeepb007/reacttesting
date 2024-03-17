@@ -3,7 +3,8 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ThemeProvider } from "@material-tailwind/react";
+import { ThemeProvider } from "@mui/material/styles";
+import customTheme from "./customTheme";
 import {
   Route,
   RouterProvider,
@@ -37,7 +38,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <ThemeProvider>
+      <ThemeProvider theme={customTheme}>
         <Provider store={store}>
           <RouterProvider router={router} />
         </Provider>

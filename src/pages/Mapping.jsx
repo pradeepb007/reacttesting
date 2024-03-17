@@ -1,11 +1,13 @@
 import React, { Suspense } from "react";
-import StoreToDc from "../components/Mapping/StoreToDc";
+import StoreToDcTable from "../components/Mapping/StoreToDcTable1";
 
 function Mapping() {
   return (
-    <Suspense fallback={<div>Loading......</div>}>
-      <StoreToDc />
-    </Suspense>
+    <div className="container mx-auto">
+      <Suspense fallback={<div>Loading......</div>}>
+        <StoreToDcTable />
+      </Suspense>
+    </div>
   );
 }
 

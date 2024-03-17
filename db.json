@@ -32,12 +32,12 @@
   "tabledata": [
     {
       "id": "1",
-      "custID": "123444",
-      "dateFrom": "03/08/2024",
-      "dateTo": "04/30/2024",
-      "dcID": 1234,
+      "custID": "1234441212",
+      "dateFrom": "03/15/2024",
+      "dateTo": "03/14/2024",
+      "dcID": "12345",
       "storeID": 1,
-      "fraction": 0.2,
+      "fraction": "0.2",
       "category": "Category 2",
       "subSector": "Sub Sector 2",
       "brand": "Brand 2",
@@ -45,7 +45,24 @@
       "createdBy": "admin",
       "createdDate": "03/03/2024",
       "modifiedBy": "admin",
-      "modifiedDate": "03/14/2024"
+      "modifiedDate": "03/17/2024"
+    },
+    {
+      "id": "2",
+      "custID": "123444",
+      "dateFrom": "03/30/2024",
+      "dateTo": "03/30/2024",
+      "dcID": "1234",
+      "storeID": "123213",
+      "fraction": "0.2",
+      "category": "Category 1",
+      "subSector": "Sub Sector 1",
+      "brand": "Brand 1",
+      "gtin": "1231312",
+      "createdBy": "admin",
+      "createdDate": "03/17/2024",
+      "modifiedBy": "admin",
+      "modifiedDate": "03/17/2024"
     }
   ]
 }
