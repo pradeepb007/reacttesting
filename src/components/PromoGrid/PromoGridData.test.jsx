@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { Provider } from "react-redux";
@@ -49,7 +49,7 @@ describe("PromoGridData Component", () => {
   });
 
   test("renders promo grid data", async () => {
-    const { getByText } = render(
+    render(
       <Provider store={store}>
         <PromoGridData />
       </Provider>
@@ -57,75 +57,75 @@ describe("PromoGridData Component", () => {
 
     // Ensure data is fetched and rendered
     await waitFor(() => {
-      expect(getByText("Promo 1")).toBeInTheDocument();
-      expect(getByText("Promo 2")).toBeInTheDocument();
+      expect(screen.getByText("Promo 1")).toBeInTheDocument();
+      expect(screen.getByText("Promo 2")).toBeInTheDocument();
     });
   });
 
   test("adds new promo", async () => {
-    const { getByText } = render(
+    render(
       <Provider store={store}>
         <PromoGridData />
       </Provider>
     );
 
     // Click on add button to open modal
-    fireEvent.click(getByText("Add"));
+    fireEvent.click(screen.getByText("Add"));
 
     // Fill form inputs
-    fireEvent.change(getByLabelText("Name"), {
+    fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "New Promo" },
     });
 
     // Submit form
-    fireEvent.click(getByText("Save"));
+    fireEvent.click(screen.getByText("Save"));
 
     // Ensure new promo is added
     await waitFor(() => {
-      expect(getByText("New Promo")).toBeInTheDocument();
+      expect(screen.getByText("New Promo")).toBeInTheDocument();
     });
   });
 
   test("updates promo", async () => {
-    const { getByText, getAllByRole } = render(
+    render(
       <Provider store={store}>
         <PromoGridData />
       </Provider>
     );
 
     // Click on edit button to open modal
-    fireEvent.click(getAllByRole("button", { name: "Edit" })[0]); // Assuming first edit button
+    fireEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]); // Assuming first edit button
 
     // Change promo name
-    fireEvent.change(getByLabelText("Name"), {
+    fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "Updated Promo" },
     });
 
     // Submit form
-    fireEvent.click(getByText("Save"));
+    fireEvent.click(screen.getByText("Save"));
 
     // Ensure promo is updated
     await waitFor(() => {
-      expect(getByText("Updated Promo")).toBeInTheDocument();
+      expect(screen.getByText("Updated Promo")).toBeInTheDocument();
     });
   });
 
   test("deletes promo", async () => {
-    const { getByText } = render(
+    render(
       <Provider store={store}>
         <PromoGridData />
       </Provider>
     );
 
     // Click on delete button
-    fireEvent.click(getByText("Delete"));
+    fireEvent.click(screen.getByText("Delete"));
 
     // Confirm deletion
-    fireEvent.click(getByText("OK"));
+    fireEvent.click(screen.getByText("OK"));
 
     // Ensure promo is deleted
     await waitFor(() => {
-      expect(getByText("Deleted promo with id")).toBeInTheDocument();
+      expect(screen.getByText("Deleted promo with id")).toBeInTheDocument();
     });
   });
 });
