@@ -1,41 +1,21 @@
 import React from "react";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import { rest } from "msw";
-import { setupServer } from "msw/node";
+import { setupServer } from "msw/lib/node";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import PromoGridData from "./PromoGridData";
 import promoGridSlice from "./promoGridSlice";
 
+// Import your request handlers
+import { handlers } from "./mocks/handlers";
+
 // Mocking API server
-const server = setupServer(
-  rest.get("/api/promoGrid", (req, res, ctx) => {
-    return res(
-      ctx.json([
-        { id: 1, name: "Promo 1" },
-        { id: 2, name: "Promo 2" },
-      ])
-    );
-  }),
-  rest.post("/api/promoGrid", (req, res, ctx) => {
-    return res(ctx.json({ id: 3, name: "New Promo" }));
-  }),
-  rest.put("/api/promoGrid/:id", (req, res, ctx) => {
-    const { id } = req.params;
-    return res(ctx.json({ id, name: "Updated Promo" }));
-  }),
-  rest.delete("/api/promoGrid/:id", (req, res, ctx) => {
-    const { id } = req.params;
-    return res(
-      ctx.status(200),
-      ctx.json({ message: `Deleted promo with id ${id}` })
-    );
-  })
-);
+const server = setupServer(...handlers);
 
 beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
+afterEach(() => server.resetHandlers());
 
 describe("PromoGridData Component", () => {
   let store;
