@@ -125,3 +125,33 @@ describe("PromoGridData Component", () => {
     });
   });
 });
+
+// PromoGridData.test.jsx
+import React from "react";
+import { render, screen, waitFor } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { server } from "./server"; // Assuming you have set up a server for MSW
+import PromoGridData from "../PromoGridData"; // Path to your component
+import { store } from "../../app/store"; // Path to your Redux store
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+test("renders promo grid data", async () => {
+  render(
+    <Provider store={store}>
+      <PromoGridData />
+    </Provider>
+  );
+
+  // Ensure data is fetched and rendered
+  await waitFor(() => {
+    expect(screen.getByText("Promo 1")).toBeInTheDocument();
+    expect(screen.getByText("Promo 2")).toBeInTheDocument();
+  });
+});
+
+test("adds new promo", async () => {
+  // Your test code for adding a new promo goes here
+});
