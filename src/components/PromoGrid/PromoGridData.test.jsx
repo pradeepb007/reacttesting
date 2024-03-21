@@ -35,6 +35,22 @@ describe("PromoGridData Component", () => {
       </Provider>
     );
 
+    await waitFor(() => screen.getByText("promogrid"));
+
+    expect(screen.getByText("123")).toBeInTheDocument();
+    expect(screen.getByText("event1")).toBeInTheDocument();
+    expect(screen.getByText("456")).toBeInTheDocument();
+    expect(screen.getByText("event2")).toBeInTheDocument();
+    // ... other assertions ...
+  });
+
+  test("renders promo grid data", async () => {
+    render(
+      <Provider store={store}>
+        <PromoGridData />
+      </Provider>
+    );
+
     // Ensure data is fetched and rendered
     await waitFor(() => {
       expect(screen.getByText("Promo 1")).toBeInTheDocument();
