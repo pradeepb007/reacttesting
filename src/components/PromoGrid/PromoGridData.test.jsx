@@ -155,3 +155,45 @@ test("renders promo grid data", async () => {
 test("adds new promo", async () => {
   // Your test code for adding a new promo goes here
 });
+
+// PromoGridData.test.js
+import React from "react";
+import { render, screen, waitFor } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import axios from "axios";
+import PromoGridData from "./PromoGridData";
+import promoGridReducer from "./promoGridSlice";
+
+jest.mock("axios");
+
+const store = configureStore({
+  reducer: {
+    promoData: promoGridReducer,
+  },
+});
+
+describe("PromoGridData", () => {
+  test("fetches promo data on mount", async () => {
+    const mockData = [
+      { id: 1, goldenCustomerId: "123", eventType: "event1" },
+      { id: 2, goldenCustomerId: "456", eventType: "event2" },
+    ];
+
+    axios.get.mockResolvedValue({ data: mockData });
+
+    render(
+      <Provider store={store}>
+        <PromoGridData />
+      </Provider>
+    );
+
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalledWith("/api/promoData");
+      expect(screen.getByText("123")).toBeInTheDocument();
+      expect(screen.getByText("event1")).toBeInTheDocument();
+      expect(screen.getByText("456")).toBeInTheDocument();
+      expect(screen.getByText("event2")).toBeInTheDocument();
+    });
+  });
+});
