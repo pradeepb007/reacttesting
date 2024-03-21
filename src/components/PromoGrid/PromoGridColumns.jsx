@@ -139,51 +139,7 @@ const PromoGridColumns = (validationErrors, handleChnage) =>
           },
         },
       },
-      {
-        accessorKey: "category",
-        header: "Category",
-        editVariant: "select",
-        editSelectOptions: categories?.map((category) => ({
-          label: category.name,
-          value: category.name,
-        })),
-        muiEditTextFieldProps: {
-          select: true,
-          variant: "outlined",
-          error: !!validationErrors?.category,
-          helperText: validationErrors?.category,
-        },
-      },
-      {
-        accessorKey: "subSector",
-        header: "Sub Sector",
-        editVariant: "select",
-        editSelectOptions: subsectors?.map((subsector) => ({
-          label: subsector.name,
-          value: subsector.name,
-        })),
-        muiEditTextFieldProps: {
-          select: true,
-          variant: "outlined",
-          error: !!validationErrors?.subSector,
-          helperText: validationErrors?.subSector,
-        },
-      },
-      {
-        accessorKey: "brand",
-        header: "Brand",
-        editVariant: "select",
-        editSelectOptions: brands?.map((brand) => ({
-          label: brand.name,
-          value: brand.name,
-        })),
-        muiEditTextFieldProps: {
-          select: true,
-          variant: "outlined",
-          error: !!validationErrors?.brand,
-          helperText: validationErrors?.brand,
-        },
-      },
+
       {
         accessorKey: "gtin",
         header: "GTIN",
@@ -214,7 +170,7 @@ const PromoGridColumns = (validationErrors, handleChnage) =>
       },
     ],
 
-    [validationErrors, brands, categories, subsectors]
+    [validationErrors]
   );
 
 export default PromoGridColumns;

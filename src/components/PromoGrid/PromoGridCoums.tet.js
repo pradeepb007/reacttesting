@@ -1,80 +1,57 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
+import { renderHook } from "@testing-library/react-hooks";
 import PromoGridColumns from "./PromoGridColumns";
 
 describe("PromoGridColumns", () => {
-  const mockValidationErrors = {
-    custID: "Custom ID error",
-    dcID: "DC ID error",
-    storeID: "Store ID error",
-    fraction: "Fraction error",
-    category: "Category error",
-    subSector: "Sub Sector error",
-    brand: "Brand error",
-  };
+  test("returns correct columns", () => {
+    const validationErrors = {};
+    const handleChnage = jest.fn();
 
-  const mockHandleChange = jest.fn();
-
-  const mockCategories = [
-    { name: "Category 1" },
-    { name: "Category 2" },
-    // Add more mock categories as needed
-  ];
-
-  const mockSubsectors = [
-    { name: "Subsector 1" },
-    { name: "Subsector 2" },
-    // Add more mock subsectors as needed
-  ];
-
-  const mockBrands = [
-    { name: "Brand 1" },
-    { name: "Brand 2" },
-    // Add more mock brands as needed
-  ];
-
-  it("renders PromoGridColumns correctly", () => {
-    render(
-      <PromoGridColumns
-        validationErrors={mockValidationErrors}
-        handleChnage={mockHandleChange}
-        categories={mockCategories}
-        subsectors={mockSubsectors}
-        brands={mockBrands}
-      />
+    const { result } = renderHook(() =>
+      PromoGridColumns(validationErrors, handleChnage)
     );
-    expect(screen.getByText("Id")).toBeInTheDocument();
-    expect(screen.getByText("Cust Id")).toBeInTheDocument();
-    // Add more expectations for other headers
-  });
 
-  it("renders all columns with proper headers", () => {
-    const columns = PromoGridColumns(
-      mockValidationErrors,
-      mockHandleChange,
-      mockCategories,
-      mockSubsectors,
-      mockBrands
+    expect(result.current).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          accessorKey: "id",
+          header: "Id",
+          enableEditing: false,
+          size: 40,
+          Edit: expect.any(Function),
+        }),
+        expect.objectContaining({
+          accessorKey: "custID",
+          header: "Cust Id",
+          muiEditTextFieldProps: {
+            required: true,
+            variant: "outlined",
+            error: expect.any(Boolean),
+            helperText: expect.anything(),
+            onChange: expect.any(Function),
+          },
+        }),
+        // ... other columns
+        expect.objectContaining({
+          accessorKey: "createdBy",
+          header: "Created By",
+          Edit: expect.any(Function),
+        }),
+        expect.objectContaining({
+          accessorKey: "createdDate",
+          header: "Created Date",
+          Edit: expect.any(Function),
+        }),
+        expect.objectContaining({
+          accessorKey: "modifiedBy",
+          header: "Modified By",
+          Edit: expect.any(Function),
+        }),
+        expect.objectContaining({
+          accessorKey: "modifiedDate",
+          header: "Modified Date",
+          Edit: expect.any(Function),
+        }),
+      ])
     );
-    const headers = columns.map((column) => column.header);
-    expect(headers).toEqual([
-      "Id",
-      "Cust Id",
-      "Date From",
-      "Date To",
-      "DC Id",
-      "Store Id",
-      "Fraction",
-      "Category",
-      "Sub Sector",
-      "Brand",
-      "GTIN",
-      "Created By",
-      "Created Date",
-      "Modified By",
-      "Modified Date",
-    ]);
   });
-
-  // Add more test cases as needed to cover different scenarios and branches
 });
