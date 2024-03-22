@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
-import StoreToDcTable from "../components/Mapping/StoreToDcTable1";
+import StoreToDcTable from "../components/Mapping/StoreToDcTable";
+import AxiosTest from "../components/Mapping/AxiosTest";
 
 function Mapping() {
   return (
