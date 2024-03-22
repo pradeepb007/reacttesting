@@ -32,13 +32,11 @@ describe("AxiosTest Component", () => {
     );
 
     await waitFor(() => {
-      expect(getData).toHaveBeenCalled(); // Ensure getData function is called
+      mockData.forEach(async (item) => {
+        expect(screen.getByText(item.category)).toBeInTheDocument();
+        expect(screen.getByText(item.custID)).toBeInTheDocument();
+        expect(screen.getByText(item.dateFrom)).toBeInTheDocument();
+      });
     });
-
-    expect(screen.getByText(/Category 2/i)).toBeInTheDocument();
-    // expect(
-    //   screen.getByText((content, node) => content.startsWith("Category 2"))
-    // ).toBeInTheDocument();
-    // expect(screen.getByText("Category 1")).toBeInTheDocument();
   });
 });

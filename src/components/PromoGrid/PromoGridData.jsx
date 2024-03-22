@@ -38,7 +38,7 @@ const PromoGridData = () => {
 
   //CREATE action
   const handleCreate = async ({ values, table }) => {
-    const newValidationErrors = validateUser(values);
+    const newValidationErrors = validateData(values);
     if (Object.values(newValidationErrors).some((error) => error)) {
       setValidationErrors(newValidationErrors);
       return;
@@ -53,7 +53,7 @@ const PromoGridData = () => {
 
   //UPDATE action
   const handleUpdate = async ({ values, table, row }) => {
-    const newValidationErrors = validateUser(values);
+    const newValidationErrors = validateData(values);
     if (Object.values(newValidationErrors).some((error) => error)) {
       setValidationErrors(newValidationErrors);
       return;

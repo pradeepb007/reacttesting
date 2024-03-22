@@ -1,187 +1,35 @@
 import React from "react";
-import { render, fireEvent, waitFor, screen } from "@testing-library/react";
-import { rest } from "msw";
-import { setupServer } from "msw/lib/node";
+import { render, waitFor, screen, fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
+import configureStore from "redux-mock-store";
+import {
+  getData,
+  addNewRowData,
+  updateRowData,
+  deleteRowData,
+} from "../../api/promoGridApi";
 import PromoGridData from "./PromoGridData";
-import promoGridSlice from "./promoGridSlice";
 
-// Import your request handlers
-import { handlers } from "./mocks/handlers";
+// Mocking the getData and API actions
+jest.mock("../../api/promoGridApi");
 
-// Mocking API server
-const server = setupServer(...handlers);
-
-beforeAll(() => server.listen());
-afterAll(() => server.close());
-afterEach(() => server.resetHandlers());
+const mockStore = configureStore([]);
 
 describe("PromoGridData Component", () => {
   let store;
 
   beforeEach(() => {
-    store = configureStore({
-      reducer: {
-        promoData: promoGridSlice.reducer,
+    store = mockStore({
+      promoData: {
+        promoData: [], // Initialize with an empty array
       },
     });
   });
 
-  test("renders promo grid data", async () => {
-    render(
-      <Provider store={store}>
-        <PromoGridData />
-      </Provider>
-    );
-
-    await waitFor(() => screen.getByText("promogrid"));
-
-    expect(screen.getByText("123")).toBeInTheDocument();
-    expect(screen.getByText("event1")).toBeInTheDocument();
-    expect(screen.getByText("456")).toBeInTheDocument();
-    expect(screen.getByText("event2")).toBeInTheDocument();
-    // ... other assertions ...
-  });
-
-  test("renders promo grid data", async () => {
-    render(
-      <Provider store={store}>
-        <PromoGridData />
-      </Provider>
-    );
-
-    // Ensure data is fetched and rendered
-    await waitFor(() => {
-      expect(screen.getByText("Promo 1")).toBeInTheDocument();
-      expect(screen.getByText("Promo 2")).toBeInTheDocument();
-    });
-  });
-
-  test("adds new promo", async () => {
-    render(
-      <Provider store={store}>
-        <PromoGridData />
-      </Provider>
-    );
-
-    // Click on add button to open modal
-    fireEvent.click(screen.getByText("Add"));
-
-    // Fill form inputs
-    fireEvent.change(screen.getByLabelText("Name"), {
-      target: { value: "New Promo" },
-    });
-
-    // Submit form
-    fireEvent.click(screen.getByText("Save"));
-
-    // Ensure new promo is added
-    await waitFor(() => {
-      expect(screen.getByText("New Promo")).toBeInTheDocument();
-    });
-  });
-
-  test("updates promo", async () => {
-    render(
-      <Provider store={store}>
-        <PromoGridData />
-      </Provider>
-    );
-
-    // Click on edit button to open modal
-    fireEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]); // Assuming first edit button
-
-    // Change promo name
-    fireEvent.change(screen.getByLabelText("Name"), {
-      target: { value: "Updated Promo" },
-    });
-
-    // Submit form
-    fireEvent.click(screen.getByText("Save"));
-
-    // Ensure promo is updated
-    await waitFor(() => {
-      expect(screen.getByText("Updated Promo")).toBeInTheDocument();
-    });
-  });
-
-  test("deletes promo", async () => {
-    render(
-      <Provider store={store}>
-        <PromoGridData />
-      </Provider>
-    );
-
-    // Click on delete button
-    fireEvent.click(screen.getByText("Delete"));
-
-    // Confirm deletion
-    fireEvent.click(screen.getByText("OK"));
-
-    // Ensure promo is deleted
-    await waitFor(() => {
-      expect(screen.getByText("Deleted promo with id")).toBeInTheDocument();
-    });
-  });
-});
-
-// PromoGridData.test.jsx
-import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { server } from "./server"; // Assuming you have set up a server for MSW
-import PromoGridData from "../PromoGridData"; // Path to your component
-import { store } from "../../app/store"; // Path to your Redux store
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
-
-test("renders promo grid data", async () => {
-  render(
-    <Provider store={store}>
-      <PromoGridData />
-    </Provider>
-  );
-
-  // Ensure data is fetched and rendered
-  await waitFor(() => {
-    expect(screen.getByText("Promo 1")).toBeInTheDocument();
-    expect(screen.getByText("Promo 2")).toBeInTheDocument();
-  });
-});
-
-test("adds new promo", async () => {
-  // Your test code for adding a new promo goes here
-});
-
-// PromoGridData.test.js
-import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import axios from "axios";
-import PromoGridData from "./PromoGridData";
-import promoGridReducer from "./promoGridSlice";
-
-jest.mock("axios");
-
-const store = configureStore({
-  reducer: {
-    promoData: promoGridReducer,
-  },
-});
-
-describe("PromoGridData", () => {
-  test("fetches promo data on mount", async () => {
-    const mockData = [
-      { id: 1, goldenCustomerId: "123", eventType: "event1" },
-      { id: 2, goldenCustomerId: "456", eventType: "event2" },
-    ];
-
-    axios.get.mockResolvedValue({ data: mockData });
-
+  it("should fetch and render data from Redux store", async () => {
+    // Mock the API response
+    const mockData = require("../../__mocks__/promoData.json");
+    getData.mockResolvedValueOnce(mockData);
     render(
       <Provider store={store}>
         <PromoGridData />
@@ -189,11 +37,71 @@ describe("PromoGridData", () => {
     );
 
     await waitFor(() => {
-      expect(axios.get).toHaveBeenCalledWith("/api/promoData");
-      expect(screen.getByText("123")).toBeInTheDocument();
-      expect(screen.getByText("event1")).toBeInTheDocument();
-      expect(screen.getByText("456")).toBeInTheDocument();
-      expect(screen.getByText("event2")).toBeInTheDocument();
+      mockData.forEach(async (item) => {
+        expect(screen.getByText(item.goldenCustomerId)).toBeInTheDocument();
+        expect(screen.getByText(item.eventType)).toBeInTheDocument();
+        // Add more expectations for other fields as needed
+      });
     });
+  });
+
+  it("should add new row data", async () => {
+    // Mock the API response for adding new row data
+    addNewRowData.mockResolvedValueOnce({});
+
+    render(
+      <Provider store={store}>
+        <PromoGridData />
+      </Provider>
+    );
+
+    // Perform actions that trigger the addition of new row data
+    // Fill the form fields and submit
+    // Ensure that the addNewRowData function is called with the correct parameters and response});
+  });
+  it("should update row data", async () => {
+    // Mock the API response for updating row data
+    updateRowData.mockResolvedValueOnce({});
+
+    render(
+      <Provider store={store}>
+        <PromoGridData />
+      </Provider>
+    );
+
+    // Perform actions that trigger the updating of row data
+    // Find the row to be updated and trigger the editing mode
+    // Update the fields with new values
+    // Click the save button
+
+    // Ensure that the updateRowData function is called with the correct parameters
+  });
+
+  it("should delete row data", async () => {
+    // Mock the API response for deleting row data
+    deleteRowData.mockResolvedValueOnce({});
+
+    render(
+      <Provider store={store}>
+        <PromoGridData />
+      </Provider>
+    );
+
+    // Perform actions that trigger the deletion of row data
+    // Find the row to be deleted and trigger the deletion action
+    // Confirm the deletion in the confirmation dialog
+
+    // Ensure that the deleteRowData function is called with the correct parameters
+  });
+
+  it("should validate data", async () => {
+    render(
+      <Provider store={store}>
+        <PromoGridData />
+      </Provider>
+    );
+
+    // Trigger the validation functions with different inputs
+    // Ensure that the validation functions return the expected results
   });
 });

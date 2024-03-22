@@ -171,3 +171,31 @@ expect(result.current).toEqual(
     // ... add similar checks for other columns ...
   ])
 );
+
+describe("DatePicker", () => {
+  it("updates the value when a new date is selected", () => {
+    const row = { _valuesCache: {} };
+    const column = { id: "date", columnDef: { header: "Date" } };
+    const initialValue = moment().format("MM/DD/YYYY");
+
+    const { getByLabelText } = render(
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <DatePicker
+          onChange={(newValue) => {
+            row._valuesCache[column.id] = moment(newValue).format("MM/DD/YYYY");
+          }}
+          label={column.columnDef.header}
+          value={initialValue}
+          slotProps={{ textField: { size: "small" } }}
+        />
+      </LocalizationProvider>
+    );
+
+    const newDate = moment().add(1, "days").format("MM/DD/YYYY");
+    fireEvent.change(getByLabelText(column.columnDef.header), {
+      target: { value: newDate },
+    });
+
+    expect(row._valuesCache[column.id]).toBe(newDate);
+  });
+});

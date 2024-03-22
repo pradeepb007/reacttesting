@@ -79,7 +79,6 @@ const StoreToDcTable = () => {
       createdDate: currentDate,
       modifiedDate: currentDate,
     };
-    console.log("new values:", newValues);
 
     // Add new row data
     await dispatch(addNewRowData(newValues));
@@ -102,7 +101,7 @@ const StoreToDcTable = () => {
     if (JSON.stringify(newValues) !== JSON.stringify(row.original)) {
       newValues.modifiedDate = currentDate;
     }
-    console.log("edit values:", values);
+
     await dispatch(updateRowData(row.original.id, newValues));
     table.setEditingRow(null); //exit editing mode
     fetchData(); // Reload data after editing

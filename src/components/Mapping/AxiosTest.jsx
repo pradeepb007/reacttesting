@@ -15,7 +15,6 @@ const AxiosTest = () => {
   useEffect(() => {
     fetchData();
   }, [dispatch, tableData]);
-  console.log("Table Data:", tableData); // Log the tableData variable
   return (
     <div>
       AxiosTest
