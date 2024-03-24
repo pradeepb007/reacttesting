@@ -31,9 +31,11 @@ describe("PromoGridData Component", () => {
     const mockData = require("../../__mocks__/promoData.json");
     getData.mockResolvedValueOnce(mockData);
     render(
-      <Provider store={store}>
-        <PromoGridData />
-      </Provider>
+      await act(async () => {
+        <Provider store={store}>
+          <PromoGridData />
+        </Provider>;
+      })
     );
 
     await waitFor(() => {
@@ -54,6 +56,10 @@ describe("PromoGridData Component", () => {
         <PromoGridData />
       </Provider>
     );
+
+    const GoldenCustomrIDInput = screen.getgetbyRole("textbox", {
+      name: "Golden Customr ID",
+    });
 
     // Perform actions that trigger the addition of new row data
     // Fill the form fields and submit
@@ -103,5 +109,51 @@ describe("PromoGridData Component", () => {
 
     // Trigger the validation functions with different inputs
     // Ensure that the validation functions return the expected results
+  });
+});
+
+import { render, waitFor, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event"; // Import userEvent for simulating user interactions
+import PromoGridData from "./PromoGridData"; // Import the component to be tested
+
+// Mock Redux actions
+jest.mock("../../api/promoGridApi", () => ({
+  ...jest.requireActual("../../api/promoGridApi"),
+  deleteRowData: jest.fn(),
+}));
+
+describe("PromoGridData component", () => {
+  it("should delete row data", async () => {
+    // Mock table data
+    const mockData = [
+      { id: 1, goldenCustomerId: "123", eventType: "Event A" },
+      { id: 2, goldenCustomerId: "456", eventType: "Event B" },
+      // Add more mock data as needed
+    ];
+    // Mock Redux state
+    jest.spyOn(require("react-redux"), "useSelector").mockReturnValue(mockData);
+
+    render(<PromoGridData />);
+
+    // Wait for the table to render with data
+    await waitFor(() => {
+      expect(screen.getByText("123")).toBeInTheDocument();
+      expect(screen.getByText("Event A")).toBeInTheDocument();
+      // Add more expectations for other rows as needed
+    });
+
+    // Mock deletion action
+    deleteRowData.mockResolvedValueOnce(); // Mock the deletion action
+
+    // Simulate deletion action (assuming delete button exists in the table)
+    userEvent.click(screen.getByRole("button", { name: /delete/i }));
+
+    // Assert that the deletion action is called with the correct parameters
+    expect(deleteRowData).toHaveBeenCalledWith(1); // Assuming the ID of the row to be deleted is 1
+
+    // Wait for the table to update after deletion
+    await waitFor(() => {
+      expect(screen.queryByText("123")).not.toBeInTheDocument(); // Assert that the deleted row is no longer present
+    });
   });
 });
