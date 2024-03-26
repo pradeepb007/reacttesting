@@ -23,10 +23,33 @@ describe("PromoGridColumns", () => {
           enableEditing: false,
           size: 40,
           Edit: expect.any(Function),
-        }),
+        },
+        {
+          accessorKey: "goldenCustID",
+          header: "Golden Customer ID",
+         muiEditTextFieldProps: {
+            required: true,
+            variant: "outlined",
+            error: expect.any(Boolean),
+            helperText: expect.anything,
+            onChange: expect.any(Function),
+        },
+      }
+        ),
         // ... add similar checks for other columns ...
       ])
     );
+
+     // Find the columns that use handleChange in their muiEditTextFieldProps.onChange function
+     const columnsWithOnChange = columns.filter(column => column.muiEditTextFieldProps && column.muiEditTextFieldProps.onChange);
+
+     // Call the onChange function for each column with some mock data
+     columnsWithOnChange.forEach(column => {
+       column.muiEditTextFieldProps.onChange({ target: { value: 'test' } });
+     });
+ 
+     // Check if handleChange was called for each column
+     expect(handleChange).toHaveBeenCalledTimes(columnsWithOnChange.length);
 });
 
 // ... existing code ...

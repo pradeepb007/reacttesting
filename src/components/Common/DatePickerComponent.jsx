@@ -6,6 +6,7 @@ const DatePickerComponent = ({ row, column, accesskey }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <DatePicker
+        aria-labelledby={`${accesskey}-label`}
         onChange={(newValue) => {
           row._valuesCache[column.id] = moment(newValue).format("MM/DD/YYYY");
         }}

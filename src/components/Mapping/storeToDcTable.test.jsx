@@ -2,7 +2,12 @@ import React from "react";
 import { render, waitFor, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import { getData } from "../../api/storeApi";
+import {
+  getData,
+  addNewRowData,
+  updateRowData,
+  deleteRowData,
+} from "../../api/storeApi";
 import StoreToDcTable from "./StoreToDcTable";
 
 // Mocking the getData function
@@ -33,7 +38,6 @@ describe("AxiosTest Component", () => {
 
     await waitFor(() => {
       mockData.forEach(async (item) => {
-        expect(screen.getByText(item.category)).toBeInTheDocument();
         expect(screen.getByText(item.custID)).toBeInTheDocument();
         expect(screen.getByText(item.dateFrom)).toBeInTheDocument();
       });

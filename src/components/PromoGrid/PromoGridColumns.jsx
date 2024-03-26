@@ -76,18 +76,7 @@ const PromoGridColumns = (validationErrors, handleChnage) =>
           error: !!validationErrors?.dcID,
           helperText: validationErrors?.dcID,
           onChange: (event) => {
-            const newValue = event.target.value;
-            if (!validateInteger(newValue)) {
-              setValidationErrors({
-                ...validationErrors,
-                dcID: "Must be a number",
-              });
-            } else {
-              setValidationErrors({
-                ...validationErrors,
-                dcID: undefined,
-              });
-            }
+            handleChnage(event, "integerValidation", "dcID");
           },
         },
       },
@@ -116,29 +105,19 @@ const PromoGridColumns = (validationErrors, handleChnage) =>
         },
       },
       {
-        accessorKey: "fraction",
-        header: "Fraction",
-        muiEditTextFieldProps: {
-          required: true,
-          variant: "outlined",
-          error: !!validationErrors?.fraction,
-          helperText: validationErrors?.fraction,
-          onChange: (event) => {
-            const newValue = event.target.value;
-            if (!validateFloat(newValue)) {
-              setValidationErrors({
-                ...validationErrors,
-                fraction: "Must be a Float number",
-              });
-            } else {
-              setValidationErrors({
-                ...validationErrors,
-                fraction: undefined,
-              });
-            }
-          },
+        accessorKey: "radiooption",
+        header: "radiooption",
+        muiEditTextFieldProps: {          
+          variant: "outlined",    
         },
-      },
+        Cell: ({ row, column }) => {
+          // Assuming the value from the database is stored in row.original.radiooption
+          return row.original[column.id] === true ? 'Yes' : row.original[column.id] === false ? 'No' : '';
+        },
+        Edit:({column, row}) => {
+         return <InputRadioCoponent row={row} column={column} />
+        }
+      }
 
       {
         accessorKey: "gtin",

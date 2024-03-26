@@ -30,6 +30,7 @@ const PromoGridData = () => {
   const fetchData = async () => {
     const response = await getData();
     dispatch(setPromoData(response));
+    setIsLoading(false);
   };
 
   useEffect(() => {

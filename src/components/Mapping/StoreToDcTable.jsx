@@ -45,12 +45,12 @@ const StoreToDcTable = () => {
   const fetchData = async () => {
     const response = await getData();
     dispatch(setStoreData(response));
-    const brandData = await getBrands();
-    setBrands(brandData);
-    const categoryData = await getCategories();
-    setCategories(categoryData);
-    const subSectorData = await getSubsectors();
-    setSubsectors(subSectorData);
+    // const brandData = await getBrands();
+    // setBrands(brandData);
+    // const categoryData = await getCategories();
+    // setCategories(categoryData);
+    // const subSectorData = await getSubsectors();
+    // setSubsectors(subSectorData);
   };
 
   useEffect(() => {
@@ -66,22 +66,8 @@ const StoreToDcTable = () => {
     }
     setValidationErrors({});
 
-    // Find the maximum id in your current data
-    const maxId = Math.max(...tableData.map((row) => row.id));
-    // Add 1 to the maximum id to get the new id
-    const newId = (maxId + 1).toString();
-    // Set default values
-    const newValues = {
-      ...values,
-      id: newId,
-      createdBy: "admin",
-      modifiedBy: "admin",
-      createdDate: currentDate,
-      modifiedDate: currentDate,
-    };
-
     // Add new row data
-    await dispatch(addNewRowData(newValues));
+    await dispatch(addNewRowData(values));
     table.setCreatingRow(null); //exit creating mode
     fetchData(); // Reload data after editing
   };
@@ -264,51 +250,7 @@ const StoreToDcTable = () => {
           },
         },
       },
-      {
-        accessorKey: "category",
-        header: "Category",
-        editVariant: "select",
-        editSelectOptions: categories?.map((category) => ({
-          label: category.name,
-          value: category.name,
-        })),
-        muiEditTextFieldProps: {
-          select: true,
-          variant: "outlined",
-          error: !!validationErrors?.category,
-          helperText: validationErrors?.category,
-        },
-      },
-      {
-        accessorKey: "subSector",
-        header: "Sub Sector",
-        editVariant: "select",
-        editSelectOptions: subsectors?.map((subsector) => ({
-          label: subsector.name,
-          value: subsector.name,
-        })),
-        muiEditTextFieldProps: {
-          select: true,
-          variant: "outlined",
-          error: !!validationErrors?.subSector,
-          helperText: validationErrors?.subSector,
-        },
-      },
-      {
-        accessorKey: "brand",
-        header: "Brand",
-        editVariant: "select",
-        editSelectOptions: brands?.map((brand) => ({
-          label: brand.name,
-          value: brand.name,
-        })),
-        muiEditTextFieldProps: {
-          select: true,
-          variant: "outlined",
-          error: !!validationErrors?.brand,
-          helperText: validationErrors?.brand,
-        },
-      },
+
       {
         accessorKey: "gtin",
         header: "GTIN",
