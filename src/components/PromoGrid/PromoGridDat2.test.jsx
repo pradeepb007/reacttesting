@@ -130,3 +130,60 @@ describe("PromoGridData component", () => {
     });
   });
 });
+
+27 - 03 - 2024; //
+
+import React from "react";
+import { render, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import handleUploadExcel from "./handleUploadExcel"; // Import your function
+import { uploadExcel } from "./apiFile"; // Import your API function
+
+jest.mock("./apiFile", () => ({
+  uploadExcel: jest.fn(),
+}));
+
+describe("handleUploadExcel function", () => {
+  test("should upload Excel file successfully", async () => {
+    const uploadExcelMock = jest.fn();
+    uploadExcel.mockImplementation(uploadExcelMock);
+
+    const file = new File(["test data"], "test.xlsx", {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const event = { target: { files: [file] } };
+
+    await handleUploadExcel(event);
+
+    expect(uploadExcelMock).toHaveBeenCalledWith(expect.any(FormData));
+  });
+
+  test("should show alert if no file selected", async () => {
+    const alertMock = jest.spyOn(window, "alert").mockImplementation(() => {});
+
+    const event = { target: { files: [] } };
+
+    await handleUploadExcel(event);
+
+    expect(alertMock).toHaveBeenCalledWith("Please select a file.");
+    expect(alertMock).toHaveBeenCalledTimes(1);
+
+    alertMock.mockRestore();
+  });
+
+  test("should show alert if non-Excel file selected", async () => {
+    const alertMock = jest.spyOn(window, "alert").mockImplementation(() => {});
+
+    const file = new File(["test data"], "test.txt", { type: "text/plain" });
+    const event = { target: { files: [file] } };
+
+    await handleUploadExcel(event);
+
+    expect(alertMock).toHaveBeenCalledWith(
+      "Please select an Excel file (XLSX format)."
+    );
+    expect(alertMock).toHaveBeenCalledTimes(1);
+
+    alertMock.mockRestore();
+  });
+});
