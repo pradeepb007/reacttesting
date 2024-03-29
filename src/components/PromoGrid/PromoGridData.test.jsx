@@ -41,4 +41,40 @@ describe("PromoGridData Component", () => {
       });
     });
   });
+  it("handles Excel file upload", async () => {
+    const file = new File(["(⌐□_□)"], "chucknorris.xlsx", {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    uploadExcel.mockResolvedValueOnce({ data: {} });
+
+    const { getByLabelText } = render(
+      <Provider store={store}>
+        <PromoGridData />
+      </Provider>
+    );
+
+    const fileInput = getByLabelText("Upload Excel");
+    fireEvent.change(fileInput, { target: { files: [file] } });
+
+    await waitFor(() => {
+      expect(uploadExcel).toHaveBeenCalledWith(expect.any(FormData));
+    });
+  });
+});
+
+it("handles successful blank Excel file download", async () => {
+  downloadBlankExcel.mockResolvedValueOnce();
+
+  const { getByText } = render(
+    <Provider store={store}>
+      <PromoGridData />
+    </Provider>
+  );
+
+  fireEvent.click(getByText("Download Blank Excel"));
+
+  await waitFor(() => {
+    expect(downloadBlankExcel).toHaveBeenCalled();
+    expect(getByText("File uploaded successfully")).toBeInTheDocument();
+  });
 });

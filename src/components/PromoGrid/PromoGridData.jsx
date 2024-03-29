@@ -104,7 +104,20 @@ const PromoGridData = () => {
   };
 
   const handleDownloadBlankExcel = async () => {
-    await downloadBlankExcel();
+    try {
+      await downloadBlankExcel();
+      setIsSnackOpen(true);
+      setSnackBar({
+        message: "File uploaded successfully",
+        severity: "success",
+      });
+    } catch (error) {
+      setIsSnackOpen(true);
+      setSnackBar({
+        message: "File uploaded fialed",
+        severity: "error",
+      });
+    }
   };
 
   const handleDataDownloadExcel = async () => {
@@ -112,24 +125,37 @@ const PromoGridData = () => {
   };
 
   const handleUploadExcel = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      if (
-        file.type !==
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ) {
-        setIsDataLoading(true);
-        const formData = new FormData();
-        formData.append("file", file);
-        await uploadExcel(formData);
-        setIsDataLoading(false);
-        fetchData();
-        event.target.value = null;
+    try {
+      const file = event.target.files[0];
+      if (file) {
+        if (
+          file.type !==
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ) {
+          setIsDataLoading(true);
+          const formData = new FormData();
+          formData.append("file", file);
+          await uploadExcel(formData);
+          setIsSnackOpen(true);
+          setSnackBar({
+            message: "File uploaded successfully",
+            severity: "success",
+          });
+          setIsDataLoading(false);
+          fetchData();
+          event.target.value = null;
+        } else {
+          alert("Please select an Excel file");
+        }
       } else {
-        alert("Please select an Excel file");
+        alert("Please select a file");
       }
-    } else {
-      alert("Please select a file");
+    } catch (error) {
+      setIsSnackOpen(true);
+      setSnackBar({
+        message: "File uploaded fialed",
+        severity: "error",
+      });
     }
   };
 

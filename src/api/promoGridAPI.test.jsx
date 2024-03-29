@@ -6,8 +6,7 @@ import { performApiRequest } from "./apiUtils";
 
 jest.mock("./apiUtils");
 
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
+const mockStore = configureMockStore();
 
 describe("promoGridApi actions", () => {
   afterEach(() => {
