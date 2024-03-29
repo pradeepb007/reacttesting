@@ -10,6 +10,9 @@ import {
   addNewRowData,
   updateRowData,
   deleteRowData,
+  downloadDataExcel,
+  downloadBlankExcel,
+  uploadExcel,
 } from "../../api/promoGridApi";
 
 import { setPromoData } from "./promoGridSlice";
@@ -25,12 +28,21 @@ const PromoGridData = () => {
   const [validationErrors, setValidationErrors] = useState({});
   const tableData = useSelector((state) => state.promoData.promoData);
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [rowCount, setRowCount] = useState(0);
+
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+
   const dispatch = useDispatch();
 
   const fetchData = async () => {
     const response = await getData();
-    dispatch(setPromoData(response));
+    dispatch(setPromoData(response.results));
     setIsLoading(false);
+    setRowCount(response.setRowCount);
   };
 
   useEffect(() => {
@@ -39,9 +51,11 @@ const PromoGridData = () => {
 
   //CREATE action
   const handleCreate = async ({ values, table }) => {
+    setIsSaving(true);
     const newValidationErrors = validateData(values);
     if (Object.values(newValidationErrors).some((error) => error)) {
       setValidationErrors(newValidationErrors);
+      setIsSaving(false);
       return;
     }
     setValidationErrors({});
@@ -50,26 +64,33 @@ const PromoGridData = () => {
     await dispatch(addNewRowData(values));
     table.setCreatingRow(null); //exit creating mode
     fetchData(); // Reload data after editing
+    setIsSaving(false);
   };
 
   //UPDATE action
   const handleUpdate = async ({ values, table, row }) => {
+    setIsSaving(true);
     const newValidationErrors = validateData(values);
     if (Object.values(newValidationErrors).some((error) => error)) {
       setValidationErrors(newValidationErrors);
+      setIsSaving(false);
       return;
     }
     setValidationErrors({});
 
     await dispatch(updateRowData(row.original.id, values));
+
     table.setEditingRow(null); //exit editing mode
     fetchData(); // Reload data after editing
+    setIsSaving(false);
   };
 
   //DELETE action
   const handleDelete = async (row) => {
     if (window.confirm("Are you sure you want to delete this data?")) {
+      setIsSaving(true);
       await dispatch(deleteRowData(row.original.id));
+      setIsSaving(false);
     }
     fetchData(); // Reload data after deleting
   };
@@ -80,6 +101,36 @@ const PromoGridData = () => {
       ...validationErrors,
       [accessorkey]: errorMessage,
     });
+  };
+
+  const handleDownloadBlankExcel = async () => {
+    await downloadBlankExcel();
+  };
+
+  const handleDataDownloadExcel = async () => {
+    await downloadDataExcel();
+  };
+
+  const handleUploadExcel = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      if (
+        file.type !==
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ) {
+        setIsDataLoading(true);
+        const formData = new FormData();
+        formData.append("file", file);
+        await uploadExcel(formData);
+        setIsDataLoading(false);
+        fetchData();
+        event.target.value = null;
+      } else {
+        alert("Please select an Excel file");
+      }
+    } else {
+      alert("Please select a file");
+    }
   };
 
   const validateData = (data) => {
@@ -111,11 +162,14 @@ const PromoGridData = () => {
     enableEditing: true,
     enableRowActions: true,
     enableColumnActions: false,
+    manualPagination: true,
+    rowCount: rowCount,
     getRowId: (row) => row.id,
     onCreatingRowSave: handleCreate,
     onCreatingRowCancel: () => setValidationErrors({}),
     onEditingRowSave: handleUpdate,
     onEditingRowCancel: () => setValidationErrors({}),
+    onPaginationChange: setPagination,
     initialState: {
       density: "compact",
       showGlobalFilter: true,
@@ -144,11 +198,24 @@ const PromoGridData = () => {
     renderRowActions: ({ row, table }) => (
       <RowActions table={table} row={row} handleDelete={handleDelete} />
     ),
+    state: {
+      isLoading: isLoading,
+      isSaving: isSaving,
+      pagination,
+    },
   });
 
   return (
     <PageSection>
-      <PageHeader table={table} titile="promogrid" subtitile="promogrid" />
+      <PageHeader
+        table={table}
+        titile="promogrid"
+        subtitile="promogrid"
+        handleDataDownloadExcel={handleDataDownloadExcel}
+        handleDownloadBlankExcel={handleDownloadBlankExcel}
+        handleUploadExcel={handleUploadExcel}
+        isDataLoading={isDataLoading}
+      />
       <MRT_TableContainer table={table} />
       <MRT_TablePagination table={table} />
     </PageSection>

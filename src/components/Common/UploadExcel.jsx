@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-const UploadExcel = ({ color, children, handleFileChange }) => {
+const UploadExcel = ({ color, children, handleFileChange, isDataLoading }) => {
   const fileInputRef = useRef(null);
   const handleClick = () => {
     fileInputRef.current.click();
@@ -13,7 +13,7 @@ const UploadExcel = ({ color, children, handleFileChange }) => {
         size="small"
         onClick={handleClick}
       >
-        {children}
+        {isDataLoading ? "Loading..." : children}
       </Button>
       <input
         type="file"

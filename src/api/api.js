@@ -1,11 +1,7 @@
 import { performApiRequest } from "./apiUtils";
 
-export const getUsers = async () => {
-  try {
-    return await performApiRequest("/users"); // Adjust endpoint as per your API
-  } catch (error) {
-    throw new Error("Failed to fetch users."); // Throw a custom error message
-  }
+export const getData = async () => {
+  return await performApiRequest("/tabledata");
 };
 export const getCategories = async () => {
   return await performApiRequest("/category");

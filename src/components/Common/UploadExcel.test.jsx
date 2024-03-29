@@ -23,4 +23,17 @@ describe("UploadExcel", () => {
     const fileInput = screen.getByLabelText(/upload/i);
     expect(fileInput).toBeInTheDocument();
   });
+  it("should display 'Loading...' when isDataLoading is true", () => {
+    const { getByText } = render(
+      <UploadExcel isDataLoading={true}>Test</UploadExcel>
+    );
+    expect(getByText("Loading...")).toBeInTheDocument();
+  });
+
+  it("should render children when isDataLoading is false", () => {
+    const { getByText } = render(
+      <UploadExcel isDataLoading={false}>Test</UploadExcel>
+    );
+    expect(getByText("Test")).toBeInTheDocument();
+  });
 });
