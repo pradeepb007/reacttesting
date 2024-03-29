@@ -110,3 +110,50 @@ describe("API File Test", () => {
     expect(() => handleError(error)).toThrowError(error);
   });
 });
+import axios from "axios";
+import { performApiRequest, handleResponse, handleError } from "./apiFile";
+import { BASE_API_URL } from "../utils/constants";
+
+jest.mock("axios");
+
+const url = `${BASE_API_URL}/test`;
+
+describe("API File Test", () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it("should log request before making the request", async () => {
+    const requestData = { name: "John" };
+    axios.request.mockResolvedValueOnce({ data: {} });
+
+    console.log = jest.fn(); // Mock console.log
+    await performApiRequest(url, "POST", requestData);
+    expect(console.log).toHaveBeenCalledWith("Making request:", expect.any(Object));
+  });
+
+  it("should log response after receiving the response", async () => {
+    const responseData = { message: "POST request successful" };
+    axios.request.mockResolvedValueOnce({ data: responseData });
+
+    console.log = jest.fn(); // Mock console.log
+    await performApiRequest(url, "POST");
+    expect(console.log).toHaveBeenCalledWith("Response received:", expect.any(Object));
+  });
+
+  it("should log request error when request fails", async () => {
+    axios.request.mockRejectedValueOnce(new Error("Request failed"));
+
+    console.error = jest.fn(); // Mock console.error
+    await expect(performApiRequest(url)).rejects.toThrowError("Request failed");
+    expect(console.error).toHaveBeenCalledWith("Request error:", expect.any(Error));
+  });
+
+  it("should log response error when response fails", async () => {
+    axios.request.mockRejectedValueOnce({ response: { status: 500 } });
+
+    console.error = jest.fn(); // Mock console.error
+    await expect(performApiRequest(url)).rejects.toThrowError("HTTP error! Status: 500");
+    expect(console.error).toHaveBeenCalledWith("Response error:", expect.any(Object));
+  });
+});
