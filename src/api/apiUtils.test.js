@@ -53,3 +53,60 @@ describe("API Utils", () => {
     });
   });
 });
+import axios from "axios";
+import { performApiRequest, handleResponse, handleError } from "./apiFile";
+import { BASE_API_URL } from "../utils/constants";
+
+jest.mock("axios");
+
+const url = `${BASE_API_URL}/test`;
+
+describe("API File Test", () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it("should perform a GET request successfully", async () => {
+    const responseData = { message: "GET request successful" };
+    axios.request.mockResolvedValueOnce({ data: responseData });
+
+    const response = await performApiRequest(url);
+    expect(response).toEqual(responseData);
+    expect(axios.request).toHaveBeenCalledWith({ url, method: "GET", data: null, responseType: undefined });
+  });
+
+  it("should handle error for failed GET request", async () => {
+    axios.request.mockRejectedValueOnce({ response: { status: 404 } });
+
+    await expect(performApiRequest(url)).rejects.toThrowError("HTTP error! Status: 404");
+    expect(axios.request).toHaveBeenCalledWith({ url, method: "GET", data: null, responseType: undefined });
+  });
+
+  it("should perform a POST request successfully", async () => {
+    const requestData = { name: "John" };
+    const responseData = { message: "POST request successful" };
+    axios.request.mockResolvedValueOnce({ data: responseData });
+
+    const response = await performApiRequest(url, "POST", requestData);
+    expect(response).toEqual(responseData);
+    expect(axios.request).toHaveBeenCalledWith({ url, method: "POST", data: requestData, responseType: undefined });
+  });
+
+  it("should handle error for failed POST request", async () => {
+    const requestData = { name: "John" };
+    axios.request.mockRejectedValueOnce({ response: { status: 500 } });
+
+    await expect(performApiRequest(url, "POST", requestData)).rejects.toThrowError("HTTP error! Status: 500");
+    expect(axios.request).toHaveBeenCalledWith({ url, method: "POST", data: requestData, responseType: undefined });
+  });
+
+  it("should handle response", () => {
+    const response = { status: 200, data: { message: "Success" } };
+    expect(handleResponse(response)).toEqual(response.data);
+  });
+
+  it("should handle error", () => {
+    const error = new Error("Request failed with status code 404");
+    expect(() => handleError(error)).toThrowError(error);
+  });
+});
