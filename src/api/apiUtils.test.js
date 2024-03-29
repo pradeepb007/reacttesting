@@ -1,55 +1,69 @@
-// utils/apiUtils.test.js
+import axios from 'axios';
+import { performApiRequest, handleResponse, handleError } from './api'; // Update the path accordingly
 
-import { performApiRequest, handleResponse, handleError } from "./apiUtils";
+// Mocking the axios instance
+jest.mock('axios');
 
-describe("API Utils", () => {
-  // Mock axios
-  const mockResponse = { data: { message: "Success" }, status: 200 };
-  const mockError = new Error("Request failed");
-  const mockApiRequest = jest.fn(() => Promise.resolve(mockResponse));
-  const mockApi = { request: mockApiRequest };
+describe('API Functions', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  // Mocking interceptor functions
+  const mockRequestInterceptor = jest.fn();
+  const mockResponseInterceptor = jest.fn();
+  axios.create.mockImplementation(() => ({
+    interceptors: {
+      request: { use: mockRequestInterceptor },
+      response: { use: mockResponseInterceptor },
+    },
+    request: jest.fn(),
+  }));
 
   // Test performApiRequest function
-  describe("performApiRequest", () => {
-    it("should make an API request and return data on success", async () => {
-      const data = await performApiRequest("/test");
-      expect(data).toEqual(mockResponse.data);
-    });
+  it('performs API request successfully', async () => {
+    const responseData = { data: 'mocked response' };
+    const url = '/test';
+    axios.request.mockResolvedValueOnce({ data: responseData });
 
-    it("should throw an error on API request failure", async () => {
-      mockApiRequest.mockRejectedValueOnce(mockError);
-      await expect(performApiRequest("/test")).rejects.toThrow(mockError);
-    });
+    const response = await performApiRequest(url);
+    expect(response).toEqual(responseData);
+    expect(axios.request).toHaveBeenCalledWith({ url, method: 'GET', data: null, responseType: undefined });
+  });
+
+  it('handles error in performApiRequest function', async () => {
+    const url = '/test';
+    axios.request.mockRejectedValueOnce(new Error('Request failed'));
+
+    await expect(performApiRequest(url)).rejects.toThrowError('Request failed');
   });
 
   // Test handleResponse function
-  describe("handleResponse", () => {
-    it("should return response data if status is between 200 and 299", () => {
-      const response = { data: { message: "Success" }, status: 200 };
-      expect(handleResponse(response)).toEqual(response.data);
-    });
+  it('handles successful response', () => {
+    const response = { status: 200, data: 'success' };
+    expect(handleResponse(response)).toEqual('success');
+  });
 
-    it("should throw an error if status is outside the range 200-299", () => {
-      const response = { status: 400 };
-      expect(() => handleResponse(response)).toThrowError(
-        `HTTP error! Status: ${response.status}`
-      );
-    });
+  it('handles error response', () => {
+    const response = { status: 404 };
+    expect(() => handleResponse(response)).toThrowError('HTTP error! Status: 404');
   });
 
   // Test handleError function
-  describe("handleError", () => {
-    it("should log and throw the error", () => {
-      const consoleErrorSpy = jest
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
-      const error = new Error("Request failed");
-      expect(() => handleError(error)).toThrowError(error);
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "Failed to perform API request:",
-        error
-      );
-      consoleErrorSpy.mockRestore();
-    });
+  it('handles error in handleError function', () => {
+    const error = new Error('Test error');
+    console.error = jest.fn(); // Mock console.error
+
+    expect(() => handleError(error)).toThrow(error);
+    expect(console.error).toHaveBeenCalledWith('Failed to perform API request:', error);
+  });
+
+  // Test interceptor functions
+  it('registers request interceptor', () => {
+    expect(mockRequestInterceptor).toHaveBeenCalled();
+  });
+
+  it('registers response interceptor', () => {
+    expect(mockResponseInterceptor).toHaveBeenCalled();
   });
 });
