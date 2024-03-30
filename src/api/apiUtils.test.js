@@ -1,6 +1,7 @@
 import axios from "axios";
 import { performApiRequest, handleResponse, handleError } from "./apiUtils";
 import { BASE_API_URL } from "../utils/constants";
+import "./apiUtils";
 
 // Mock axios
 jest.mock("axios");
@@ -35,6 +36,26 @@ describe("API Utils", () => {
       await expect(performApiRequest("users/1", "GET")).rejects.toThrow(
         errorMessage
       );
+    });
+    it("should setup axios request and response interceptors", () => {
+      // Add a small delay to allow axios interceptors to be set up
+      setTimeout(() => {
+        expect(axios.interceptors.request.use).toHaveBeenCalled();
+        expect(axios.interceptors.request.use.mock.calls[0][0]).toBeInstanceOf(
+          Function
+        );
+        expect(axios.interceptors.request.use.mock.calls[0][1]).toBeInstanceOf(
+          Function
+        );
+
+        expect(axios.interceptors.response.use).toHaveBeenCalled();
+        expect(axios.interceptors.response.use.mock.calls[0][0]).toBeInstanceOf(
+          Function
+        );
+        expect(axios.interceptors.response.use.mock.calls[0][1]).toBeInstanceOf(
+          Function
+        );
+      }, 100); // Adjust the delay as needed
     });
   });
 
