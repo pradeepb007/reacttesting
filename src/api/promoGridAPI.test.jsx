@@ -1,50 +1,95 @@
-import configureMockStore from "redux-mock-store";
-import thunk from "redux-thunk";
-import * as api from "./promoGridApi";
-import * as actions from "../components/PromoGrid/promoGridSlice";
+import {
+  addPromoData,
+  deletePromoData,
+  editPromoData,
+} from "../components/PromoGrid/promoGridSlice";
 import { performApiRequest } from "./apiUtils";
+import {
+  getData,
+  addNewRowData,
+  updateRowData,
+  deleteRowData,
+  downloadBlankExcel,
+} from "./promoGridApi";
 
-jest.mock("./apiUtils");
+jest.mock("./apiUtils", () => ({
+  performApiRequest: jest.fn(),
+}));
 
-const mockStore = configureMockStore();
+jest.mock("../components/PromoGrid/promoGridSlice", () => ({
+  addPromoData: jest.fn(),
+  deletePromoData: jest.fn(),
+  editPromoData: jest.fn(),
+}));
 
-describe("promoGridApi actions", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
+describe("promoGridApi", () => {
+  it("gets data", async () => {
+    performApiRequest.mockResolvedValueOnce("data");
+    const data = await getData();
+    expect(data).toBe("data");
+    expect(performApiRequest).toHaveBeenCalledWith("/promodata");
   });
 
-  it("should dispatch addPromoData action after addNewRowData", async () => {
-    const mockData = { id: 1, name: "test" };
-    performApiRequest.mockResolvedValueOnce(mockData);
-
-    const expectedActions = [actions.addPromoData(mockData)];
-    const store = mockStore({});
-
-    await store.dispatch(api.addNewRowData(mockData));
-    expect(store.getActions()).toEqual(expectedActions);
+  it("adds new row data", async () => {
+    const dispatch = jest.fn();
+    const rowData = { id: 1, name: "test" };
+    performApiRequest.mockResolvedValueOnce(rowData);
+    await addNewRowData(rowData)(dispatch);
+    expect(dispatch).toHaveBeenCalledWith(addPromoData(rowData));
+    expect(performApiRequest).toHaveBeenCalledWith(
+      "/promodata",
+      "POST",
+      rowData
+    );
   });
 
-  it("should dispatch editPromoData action after updateRowData", async () => {
-    const mockData = { id: 1, name: "test updated" };
-    performApiRequest.mockResolvedValueOnce(mockData);
-
-    const expectedActions = [
-      actions.editPromoData({ id: mockData.id, newData: mockData }),
-    ];
-    const store = mockStore({});
-
-    await store.dispatch(api.updateRowData(mockData.id, mockData));
-    expect(store.getActions()).toEqual(expectedActions);
+  it("updates row data", async () => {
+    const dispatch = jest.fn();
+    const id = 1;
+    const rowData = { id: 1, name: "test" };
+    performApiRequest.mockResolvedValueOnce(rowData);
+    await updateRowData(id, rowData)(dispatch);
+    expect(dispatch).toHaveBeenCalledWith(
+      editPromoData({ id, newData: rowData })
+    );
+    expect(performApiRequest).toHaveBeenCalledWith(
+      `/promodata/${id}`,
+      "PUT",
+      rowData
+    );
   });
 
-  it("should dispatch deletePromoData action after deleteRowData", async () => {
-    const mockId = 1;
-    performApiRequest.mockResolvedValueOnce();
+  it("deletes row data", async () => {
+    const dispatch = jest.fn();
+    const id = 1;
+    await deleteRowData(id)(dispatch);
+    expect(dispatch).toHaveBeenCalledWith(deletePromoData(id));
+    expect(performApiRequest).toHaveBeenCalledWith(
+      `/promodata/${id}`,
+      "DELETE"
+    );
+  });
 
-    const expectedActions = [actions.deletePromoData(mockId)];
-    const store = mockStore({});
-
-    await store.dispatch(api.deleteRowData(mockId));
-    expect(store.getActions()).toEqual(expectedActions);
+  it("downloads blank Excel", async () => {
+    const response = new Blob(["test"], { type: "application/vnd.ms-excel" });
+    performApiRequest.mockResolvedValueOnce(response);
+    const url = window.URL.createObjectURL(response);
+    const revokeObjectURLSpy = jest.spyOn(window.URL, "revokeObjectURL");
+    const createElementSpy = jest.spyOn(document, "createElement");
+    const appendChildSpy = jest.spyOn(document.body, "appendChild");
+    const removeChildSpy = jest.spyOn(document.body, "removeChild");
+    await downloadBlankExcel();
+    expect(performApiRequest).toHaveBeenCalledWith(
+      "/downloadBlankExcel",
+      "GET"
+    );
+    expect(createElementSpy).toHaveBeenCalledWith("a");
+    expect(appendChildSpy).toHaveBeenCalled();
+    expect(removeChildSpy).toHaveBeenCalled();
+    expect(revokeObjectURLSpy).toHaveBeenCalledWith(url);
+    createElementSpy.mockRestore();
+    appendChildSpy.mockRestore();
+    removeChildSpy.mockRestore();
+    revokeObjectURLSpy.mockRestore();
   });
 });
