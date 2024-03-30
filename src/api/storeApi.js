@@ -6,7 +6,7 @@ import {
 import { performApiRequest } from "./apiUtils";
 
 export const getData = async () => {
-  return await performApiRequest("/tabledata");
+  return await performApiRequest("tabledata");
 };
 
 export const addNewRowData = (rowData) => async (dispatch) => {
