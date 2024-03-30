@@ -1,69 +1,74 @@
-import axios from 'axios';
-import { performApiRequest, handleResponse, handleError } from './api'; // Update the path accordingly
+import axios from "axios";
+import { performApiRequest } from "./apiUtils";
 
-// Mocking the axios instance
-jest.mock('axios');
+jest.mock("axios");
 
-describe('API Functions', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+describe("apiUtils", () => {
+  describe("performApiRequest", () => {
+    it("makes a successful API request", async () => {
+      const response = { data: "test", status: 200 };
+      axios.request.mockResolvedValueOnce(response);
+
+      const result = await performApiRequest("/test", "GET", null, "json");
+
+      expect(axios.request).toHaveBeenCalledWith({
+        url: "/test",
+        method: "GET",
+        data: null,
+        responseType: "json",
+      });
+      expect(result).toBe("test");
+    });
+
+    it("throws an error for a failed API request", async () => {
+      const error = new Error("Request failed");
+      axios.request.mockRejectedValueOnce(error);
+
+      await expect(
+        performApiRequest("/test", "GET", null, "json")
+      ).rejects.toThrow("Request failed");
+      expect(axios.request).toHaveBeenCalledWith({
+        url: "/test",
+        method: "GET",
+        data: null,
+        responseType: "json",
+      });
+    });
   });
 
-  // Mocking interceptor functions
-  const mockRequestInterceptor = jest.fn();
-  const mockResponseInterceptor = jest.fn();
-  axios.create.mockImplementation(() => ({
-    interceptors: {
-      request: { use: mockRequestInterceptor },
-      response: { use: mockResponseInterceptor },
-    },
-    request: jest.fn(),
-  }));
+  describe("axios interceptors", () => {
+    it("logs request and response info", () => {
+      const consoleSpy = jest.spyOn(console, "log");
 
-  // Test performApiRequest function
-  it('performs API request successfully', async () => {
-    const responseData = { data: 'mocked response' };
-    const url = '/test';
-    axios.request.mockResolvedValueOnce({ data: responseData });
+      axios.interceptors.request.handlers[0].fulfilled({ url: "/test" });
+      expect(consoleSpy).toHaveBeenCalledWith("Making request:", {
+        url: "/test",
+      });
 
-    const response = await performApiRequest(url);
-    expect(response).toEqual(responseData);
-    expect(axios.request).toHaveBeenCalledWith({ url, method: 'GET', data: null, responseType: undefined });
-  });
+      axios.interceptors.response.handlers[0].fulfilled({ data: "test" });
+      expect(consoleSpy).toHaveBeenCalledWith("Response received:", {
+        data: "test",
+      });
 
-  it('handles error in performApiRequest function', async () => {
-    const url = '/test';
-    axios.request.mockRejectedValueOnce(new Error('Request failed'));
+      consoleSpy.mockRestore();
+    });
 
-    await expect(performApiRequest(url)).rejects.toThrowError('Request failed');
-  });
+    it("logs request and response errors", () => {
+      const consoleErrorSpy = jest.spyOn(console, "error");
 
-  // Test handleResponse function
-  it('handles successful response', () => {
-    const response = { status: 200, data: 'success' };
-    expect(handleResponse(response)).toEqual('success');
-  });
+      axios.interceptors.request.handlers[0].rejected("Request error");
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "Request error:",
+        "Request error"
+      );
 
-  it('handles error response', () => {
-    const response = { status: 404 };
-    expect(() => handleResponse(response)).toThrowError('HTTP error! Status: 404');
-  });
+      axios.interceptors.response.handlers[0].rejected("Response error");
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "Response error:",
+        "Response error"
+      );
 
-  // Test handleError function
-  it('handles error in handleError function', () => {
-    const error = new Error('Test error');
-    console.error = jest.fn(); // Mock console.error
-
-    expect(() => handleError(error)).toThrow(error);
-    expect(console.error).toHaveBeenCalledWith('Failed to perform API request:', error);
-  });
-
-  // Test interceptor functions
-  it('registers request interceptor', () => {
-    expect(mockRequestInterceptor).toHaveBeenCalled();
-  });
-
-  it('registers response interceptor', () => {
-    expect(mockResponseInterceptor).toHaveBeenCalled();
+      consoleErrorSpy.mockRestore();
+    });
   });
 });
