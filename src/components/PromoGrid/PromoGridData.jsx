@@ -159,6 +159,11 @@ const PromoGridData = () => {
     }
   };
 
+  const handleSnackbar = () => {
+    setIsSnackOpen(false);
+    setSnackBar(null);
+  };
+
   const validateData = (data) => {
     return {
       goldenCustomerId: handleValidate(
