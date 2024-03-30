@@ -57,6 +57,38 @@ describe("API Utils", () => {
         );
       }, 100); // Adjust the delay as needed
     });
+
+    it("should log the response when intercepting successful responses", async () => {
+      setTimeout(() => {
+        const mockResponse = { data: { message: "Success" }, status: 200 };
+        const mockInterceptor =
+          axios.interceptors.response.use.mock.calls[0][0];
+        const consoleLogSpy = jest.spyOn(console, "log");
+
+        mockInterceptor(mockResponse);
+
+        expect(consoleLogSpy).toHaveBeenCalledWith(
+          "Response received:",
+          mockResponse
+        );
+      }, 100);
+    });
+
+    it("should log the error when intercepting error responses", async () => {
+      setTimeout(() => {
+        const mockError = new Error("Failed to fetch data");
+        const mockInterceptor =
+          axios.interceptors.response.use.mock.calls[0][1];
+        const consoleErrorSpy = jest.spyOn(console, "error");
+
+        mockInterceptor(mockError);
+
+        expect(consoleErrorSpy).toHaveBeenCalledWith(
+          "Response error:",
+          mockError
+        );
+      }, 100);
+    });
   });
 
   describe("handleResponse", () => {
