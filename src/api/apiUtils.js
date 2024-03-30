@@ -2,13 +2,8 @@
 import axios from "axios";
 import { BASE_API_URL } from "../utils/constants";
 
-const api = axios.create({
-  baseURL: BASE_API_URL,
-  timeout: 10000, // adjust as needed
-});
-
 // Add a request interceptor
-api.interceptors.request.use(
+axios.interceptors.request.use(
   (config) => {
     console.log("Making request:", config);
     return config;
@@ -20,7 +15,7 @@ api.interceptors.request.use(
 );
 
 // Add a response interceptor
-api.interceptors.response.use(
+axios.interceptors.response.use(
   (response) => {
     console.log("Response received:", response);
     return response;
@@ -38,8 +33,8 @@ export const performApiRequest = async (
   responseType
 ) => {
   try {
-    const response = await api.request({
-      url,
+    const response = await axios({
+      url: `${BASE_API_URL}/${url}`,
       method,
       data,
       responseType,

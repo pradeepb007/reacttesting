@@ -1,64 +1,70 @@
-// apiUtils.test.js
 import axios from "axios";
 import { performApiRequest, handleResponse, handleError } from "./apiUtils";
+import { BASE_API_URL } from "../utils/constants";
 
+// Mock axios
 jest.mock("axios");
 
 describe("API Utils", () => {
-  beforeEach(() => {
-    axios.create.mockReturnValue({
-      interceptors: {
-        request: { use: jest.fn() },
-        response: { use: jest.fn() },
-      },
-      request: jest.fn().mockResolvedValue({ data: "test", status: 200 }),
-    });
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   describe("performApiRequest", () => {
-    it("should perform a successful API request", async () => {
-      const result = await performApiRequest("/test", "GET", null, "json");
-      expect(result).toBe("test");
+    it("should make a GET request to the correct URL", async () => {
+      const mockResponseData = { id: 1, message: "welcome" };
+      const mockUrl = "data";
+      const mockBaseUrl = BASE_API_URL; // Replace with your BASE_API_URL
+      axios.mockResolvedValueOnce({ status: 200, data: mockResponseData });
+
+      const response = await performApiRequest(mockUrl, "GET");
+
+      expect(axios).toHaveBeenCalledWith({
+        url: `${mockBaseUrl}/${mockUrl}`,
+        method: "GET",
+        data: null,
+        responseType: undefined,
+      });
+      expect(response).toEqual(mockResponseData);
     });
 
-    it("should throw an error if the request fails", async () => {
-      axios.create.mockReturnValue({
-        interceptors: {
-          request: { use: jest.fn() },
-          response: { use: jest.fn() },
-        },
-        request: jest.fn().mockRejectedValue(new Error("Request failed")),
-      });
+    it("should handle errors properly", async () => {
+      const errorMessage = "Failed to fetch data";
+      axios.mockRejectedValueOnce(new Error(errorMessage));
 
-      await expect(
-        performApiRequest("/test", "GET", null, "json")
-      ).rejects.toThrow("Request failed");
+      await expect(performApiRequest("users/1", "GET")).rejects.toThrow(
+        errorMessage
+      );
     });
   });
 
   describe("handleResponse", () => {
-    it("should return the response data for a successful response", () => {
-      const mockResponse = { data: "test", status: 200 };
+    it("should return response data if status is between 200 and 299", () => {
+      const responseData = { id: 1, name: "John" };
+      const response = { status: 200, data: responseData };
 
-      const result = handleResponse(mockResponse);
-
-      expect(result).toBe("test");
+      expect(handleResponse(response)).toEqual(responseData);
     });
 
-    it("should throw an error for an unsuccessful response", () => {
-      const mockResponse = { data: "test", status: 400 };
+    it("should throw an error if status is not between 200 and 299", () => {
+      const response = { status: 404 };
 
-      expect(() => handleResponse(mockResponse)).toThrow(
-        "HTTP error! Status: 400"
+      expect(() => handleResponse(response)).toThrowError(
+        `HTTP error! Status: ${response.status}`
       );
     });
   });
 
   describe("handleError", () => {
-    it("should throw the provided error", () => {
-      const mockError = new Error("Request failed");
+    it("should log the error and throw it", () => {
+      const error = new Error("Failed to perform API request");
+      console.error = jest.fn(); // Mock console.error
 
-      expect(() => handleError(mockError)).toThrow("Request failed");
+      expect(() => handleError(error)).toThrow(error);
+      expect(console.error).toHaveBeenCalledWith(
+        "Failed to perform API request:",
+        error
+      );
     });
   });
 });
