@@ -129,3 +129,86 @@ describe("PromoGridData component", () => {
     });
   });
 });
+
+import { act, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import Grid from "./Grid"; // Replace './Grid' with the correct path to your JSX file containing handleCreate
+
+describe("handleCreate function", () => {
+  // Mocking the necessary functions and objects
+  const mockSetIsSaving = jest.fn();
+  const mockSetValidationErrors = jest.fn();
+  const mockDispatch = jest.fn();
+  const mockSetCreatingRow = jest.fn();
+  const mockSetIsLoading = jest.fn();
+  const mockSetIsRefetching = jest.fn();
+  const mockFetchData = jest.fn();
+  const mockSetIsSnackBarOpen = jest.fn();
+  const mockSetSnackBar = jest.fn();
+
+  const mockTable = { setCreatingRow: mockSetCreatingRow };
+
+  // Mock values for different scenarios
+  const mockValues = {
+    key1: "123",
+    key2: "1.23",
+    key3: "",
+    key4: "some value",
+  };
+
+  test("handles different types of input values", async () => {
+    // Mocking the validation functions
+    jest.mock("./commonMethods", () => ({
+      validateInteger: jest
+        .fn()
+        .mockImplementation((value) => !isNaN(parseInt(value))),
+      validateFloat: jest
+        .fn()
+        .mockImplementation((value) => !isNaN(parseFloat(value))),
+      validateString: jest.fn().mockImplementation(() => true),
+    }));
+
+    // Mocking the API response
+    const mockResponse = { results: "mocked response" };
+    jest.mock("./promoGridApi", () => ({
+      addNewRowData: jest.fn().mockResolvedValue(mockResponse),
+    }));
+
+    // Render the component containing handleCreate
+    render(<Grid />); // Replace Grid with the correct component name
+
+    // Accessing handleCreate directly from the component
+    await act(async () => {
+      await Grid.handleCreate({
+        values: mockValues,
+        table: mockTable,
+        setIsSaving: mockSetIsSaving,
+        setValidationErrors: mockSetValidationErrors,
+        dispatch: mockDispatch,
+        setIsLoading: mockSetIsLoading,
+        setIsRefetching: mockSetIsRefetching,
+        fetchData: mockFetchData,
+        setIsSnackBarOpen: mockSetIsSnackBarOpen,
+        setSnackBar: mockSetSnackBar,
+      });
+    });
+
+    // Expectations for parsedValues
+    expect(mockSetIsSaving).toHaveBeenCalledWith(true);
+    expect(mockSetValidationErrors).not.toHaveBeenCalled();
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: "ADD_PROMO_DATA",
+      payload: "mocked response",
+    });
+    expect(mockSetCreatingRow).toHaveBeenCalledWith(null);
+    expect(mockSetIsLoading).toHaveBeenCalledWith(true);
+    expect(mockSetIsRefetching).toHaveBeenCalledWith(true);
+    expect(mockFetchData).toHaveBeenCalled();
+    expect(mockSetIsSaving).toHaveBeenCalledWith(false);
+    expect(mockSetIsSnackBarOpen).toHaveBeenCalledWith(true);
+    expect(mockSetSnackBar).toHaveBeenCalledWith({
+      message: "Data Added Successfully",
+      severity: "success",
+    });
+  });
+});
