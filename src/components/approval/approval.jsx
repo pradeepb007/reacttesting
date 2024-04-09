@@ -88,3 +88,45 @@ describe("ToggleButtons", () => {
     expect(rejectButton).toHaveAttribute("color", "error");
   });
 });
+
+import { render, fireEvent } from "@testing-library/react";
+import Example from "./Example";
+import { MaterialReactTable } from "material-react-table";
+
+jest.mock("material-react-table", () => ({
+  MaterialReactTable: jest.fn(() => null),
+  useMaterialReactTable: jest.fn(() => ({})),
+}));
+
+describe("Example", () => {
+  beforeEach(() => {
+    MaterialReactTable.mockClear();
+  });
+
+  it("should render MaterialReactTable with correct props", () => {
+    render(<Example />);
+
+    expect(MaterialReactTable).toHaveBeenCalledWith(
+      expect.objectContaining({
+        columns: expect.any(Function),
+        data: expect.arrayContaining([
+          expect.objectContaining({ product: "product 1" }),
+          expect.objectContaining({ product: "product 2" }),
+        ]),
+        enableEditing: false,
+        enableRowActions: true,
+        enableColumnActions: false,
+        manualPagination: true,
+        initialState: expect.objectContaining({
+          density: "compact",
+          showGlobalFilter: true,
+          columnPinning: expect.objectContaining({
+            right: ["mrt-row-actions"],
+          }),
+        }),
+        renderRowActions: expect.any(Function),
+      }),
+      {}
+    );
+  });
+});
