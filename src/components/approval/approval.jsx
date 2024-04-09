@@ -52,3 +52,39 @@ describe("ToggleButtons", () => {
     );
   });
 });
+
+import { render, fireEvent } from "@testing-library/react";
+import ToggleButtons from "./ToggleButtons";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+
+describe("ToggleButtons", () => {
+  it("should render with initial state", () => {
+    const { getByLabelText } = render(<ToggleButtons />);
+
+    const approveButton = getByLabelText("approve");
+    const rejectButton = getByLabelText("reject");
+
+    expect(approveButton).toBeInTheDocument();
+    expect(rejectButton).toBeInTheDocument();
+  });
+
+  it("should update state when approve button is clicked", () => {
+    const { getByLabelText } = render(<ToggleButtons />);
+
+    const approveButton = getByLabelText("approve");
+    fireEvent.click(approveButton);
+
+    expect(approveButton).toHaveAttribute("aria-pressed", "true");
+    expect(approveButton).toHaveAttribute("color", "success");
+  });
+
+  it("should update state when reject button is clicked", () => {
+    const { getByLabelText } = render(<ToggleButtons />);
+
+    const rejectButton = getByLabelText("reject");
+    fireEvent.click(rejectButton);
+
+    expect(rejectButton).toHaveAttribute("aria-pressed", "true");
+    expect(rejectButton).toHaveAttribute("color", "error");
+  });
+});
