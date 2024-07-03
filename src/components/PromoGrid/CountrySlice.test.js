@@ -1,82 +1,138 @@
-//CountrySlice.test.js
-
-import { configureStore } from "@reduxjs/toolkit";
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import CountrySlice, { fetchCountryAndState } from "./CountrySlice";
+import * as api from "./api/api";
 
-describe("CountrySlice reducer tests", () => {
+// Mocking getCountries API call
+jest.mock("./api/api", () => ({
+  getCountries: jest.fn(),
+}));
+
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
+describe("CountrySlice", () => {
   let store;
 
   beforeEach(() => {
-    store = configureStore({
-      reducer: {
-        countryState: CountrySlice.reducer,
+    store = mockStore({
+      countryData: {},
+      countryOptions: [],
+      isLoading: false,
+      error: null,
+    });
+  });
+
+  it("should handle initial state", () => {
+    const initialState = CountrySlice(undefined, {});
+
+    expect(initialState).toEqual({
+      countryData: {},
+      countryOptions: [],
+      isLoading: false,
+      error: null,
+    });
+  });
+
+  it("should handle fetchCountryAndState pending", () => {
+    const action = { type: fetchCountryAndState.pending.type };
+    const state = CountrySlice(
+      {
+        countryData: {},
+        countryOptions: [],
+        isLoading: false,
+        error: null,
       },
+      action
+    );
+
+    expect(state).toEqual({
+      countryData: {},
+      countryOptions: [],
+      isLoading: true,
+      error: null,
     });
   });
 
-  test("should set initial state of countryData to an empty object", () => {
-    const initialState = store.getState().countryState;
-    expect(initialState.countryData).toEqual({});
-  });
-
-  test("should set selectedCountry and stateOptions in the state", () => {
-    const action = CountrySlice.actions.setSelectedCountry("US");
-    store.dispatch(action);
-
-    const newState = store.getState().countryState;
-    expect(newState.selectedCountry).toEqual("US");
-    expect(newState.stateOptions).toEqual(newState.countryData.US);
-  });
-
-  test("should dispatch fetchCountryAndState.pending action", async () => {
-    const dispatch = jest.fn();
-    const getState = jest.fn();
-    const extra = {
-      getCountries: jest
-        .fn()
-        .mockResolvedValue({ countries: { US: ["California", "Florida"] } }),
+  it("should handle fetchCountryAndState fulfilled", () => {
+    const countries = { USA: "United States", CAN: "Canada" };
+    const action = {
+      type: fetchCountryAndState.fulfilled.type,
+      payload: countries,
     };
-
-    await fetchCountryAndState()(dispatch, getState, extra);
-
-    expect(extra.getCountries).toHaveBeenCalled();
-    const pendingAction = dispatch.mock.calls.find((call) =>
-      call[0].type.endsWith("/pending")
+    const state = CountrySlice(
+      {
+        countryData: {},
+        countryOptions: [],
+        isLoading: false,
+        error: null,
+      },
+      action
     );
-    expect(pendingAction).toBeTruthy();
-  });
 
-  test("should dispatch fetchCountryAndState.fulfilled action with fetched countries", async () => {
-    const dispatch = jest.fn();
-    const getState = jest.fn();
-    const extra = {
-      getCountries: jest
-        .fn()
-        .mockResolvedValue({ countries: { US: ["California", "Florida"] } }),
-    };
-
-    await fetchCountryAndState()(dispatch, getState, extra);
-
-    const fulfilledAction = dispatch.mock.calls.find((call) =>
-      call[0].type.endsWith("/fulfilled")
-    );
-    expect(fulfilledAction[0].payload).toEqual({
-      US: ["California", "Florida"],
+    expect(state).toEqual({
+      countryData: countries,
+      countryOptions: ["USA", "CAN"],
+      isLoading: false,
+      error: null,
     });
   });
 
-  test("should dispatch fetchCountryAndState.rejected action with error message", async () => {
-    const dispatch = jest.fn();
-    const getState = jest.fn();
-    const extra = {
-      getCountries: jest.fn().mockRejectedValue(new Error("API error")),
+  it("should handle fetchCountryAndState rejected", () => {
+    const action = {
+      type: fetchCountryAndState.rejected.type,
+      error: { message: "Error fetching data" },
     };
-
-    await fetchCountryAndState()(dispatch, getState, extra);
-
-    const rejectedAction = dispatch.mock.calls.find((call) =>
-      call[0].type.endsWith("/rejected")
+    const state = CountrySlice(
+      {
+        countryData: {},
+        countryOptions: [],
+        isLoading: false,
+        error: null,
+      },
+      action
     );
-    expect(rejectedAction[0].error.message).toEqual("API error");
+
+    expect(state).toEqual({
+      countryData: {},
+      countryOptions: [],
+      isLoading: false,
+      error: "Error fetching data",
+    });
+  });
+
+  it("creates fetchCountryAndState fulfilled when fetching countries has been done", async () => {
+    const countries = { USA: "United States", CAN: "Canada" };
+    api.getCountries.mockResolvedValue({ countries });
+
+    const expectedActions = [
+      { type: fetchCountryAndState.pending.type },
+      { type: fetchCountryAndState.fulfilled.type, payload: countries },
+    ];
+
+    await store.dispatch(fetchCountryAndState());
+
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it("creates fetchCountryAndState rejected when fetching countries has failed", async () => {
+    const errorMessage = "Network Error";
+    api.getCountries.mockRejectedValue(new Error(errorMessage));
+
+    const expectedActions = [
+      { type: fetchCountryAndState.pending.type },
+      {
+        type: fetchCountryAndState.rejected.type,
+        error: { message: errorMessage },
+      },
+    ];
+
+    await store.dispatch(fetchCountryAndState());
+
+    const actions = store.getActions();
+    expect(actions[0]).toEqual(expectedActions[0]);
+    expect(actions[1].type).toEqual(expectedActions[1].type);
+    expect(actions[1].error.message).toEqual(expectedActions[1].error.message);
   });
 });
