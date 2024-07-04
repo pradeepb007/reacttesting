@@ -372,3 +372,115 @@ const MyForm = () => {
     </form>
   );
 };
+
+import React from 'eact';
+import { useForm, useWatch } from 'eact-hook-form';
+import { TextField, Select, MenuItem, DatePicker } from '@material-ui/core';
+
+const MyForm = () => {
+  const { register, errors, watch, handleSubmit } = useForm();
+  const country = watch('country');
+  const startDate = watch('startDate');
+
+  const handleCountryChange = (country) => {
+    // Update the state dropdown based on the selected country
+    //...
+  };
+
+  const handleStartDateChange = (startDate) => {
+    // Update the end date validation based on the selected start date
+    //...
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <label>Country:</label>
+      <Select {...register('country')} onChange={handleCountryChange}>
+        <MenuItem value="">Select country</MenuItem>
+        <MenuItem value="USA">USA</MenuItem>
+        <MenuItem value="Canada">Canada</MenuItem>
+        <!-- Add more options -->
+      </Select>
+      {errors.country && <div>{errors.country.message}</div>}
+
+      {country && (
+        <div>
+          <label>State:</label>
+          <Select {...register('state')}>
+            <MenuItem value="">Select state</MenuItem>
+            <!-- Populate state options based on the selected country -->
+          </Select>
+          {errors.state && <div>{errors.state.message}</div>}
+        </div>
+      )}
+
+      <label>Start Date:</label>
+      <DatePicker
+        {...register('startDate')}
+        onChange={handleStartDateChange}
+        format="MM/dd/yyyy"
+      />
+      {errors.startDate && <div>{errors.startDate.message}</div>}
+
+      <label>End Date:</label>
+      <DatePicker
+        {...register('endDate', {
+          validate: (value) => {
+            if (!startDate) {
+              return 'Please select start date first';
+            }
+            if (value < startDate) {
+              return 'End date must be after start date';
+            }
+          },
+        })}
+        format="MM/dd/yyyy"
+      />
+      {errors.endDate && <div>{errors.endDate.message}</div>}
+
+      <label>Integer Field:</label>
+      <TextField
+        type="number"
+        {...register('integerField', {
+          validate: (value) => {
+            if (isNaN(value)) {
+              return 'Please enter a valid integer';
+            }
+            if (value % 1!== 0) {
+              return 'Please enter a whole number';
+            }
+          },
+        })}
+      />
+      {errors.integerField && <div>{errors.integerField.message}</div>}
+
+      <label>Float Field:</label>
+      <TextField
+        type="number"
+        {...register('floatField', {
+          validate: (value) => {
+            if (isNaN(value)) {
+              return 'Please enter a valid number';
+            }
+          },
+        })}
+      />
+      {errors.floatField && <div>{errors.floatField.message}</div>}
+
+      <label>String Field:</label>
+      <TextField
+        type="text"
+        {...register('stringField', {
+          validate: (value) => {
+            if (value.trim() === '') {
+              return 'Please enter a valid string';
+            }
+          },
+        })}
+      />
+      {errors.stringField && <div>{errors.stringField.message}</div>}
+
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
