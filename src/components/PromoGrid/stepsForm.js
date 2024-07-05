@@ -226,3 +226,87 @@ const StepperForm = () => {
 };
 
 export default StepperForm;
+
+
+import React from 'react';
+import { Controller } from 'react-hook-form';
+import { TextField, MenuItem, Switch, FormControlLabel } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+
+const FormControl = ({ control, name, label, type, options, rules }) => {
+  const renderField = (field, error) => {
+    switch (type) {
+      case 'text':
+      case 'number':
+        return (
+          <TextField
+            {...field}
+            type={type}
+            label={label}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={!!error}
+            helperText={error ? error.message : ''}
+          />
+        );
+      case 'select':
+        return (
+          <TextField
+            {...field}
+            select
+            label={label}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={!!error}
+            helperText={error ? error.message : ''}
+          >
+            {options.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        );
+      case 'switch':
+        return (
+          <FormControlLabel
+            control={<Switch {...field} checked={field.value} />}
+            label={label}
+          />
+        );
+      case 'date':
+        return (
+          <DatePicker
+            {...field}
+            label={label}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                error={!!error}
+                helperText={error ? error.message : ''}
+              />
+            )}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Controller
+      name={name}
+      control={control}
+      rules={rules}
+      render={({ field, fieldState: { error } }) => renderField(field, error)}
+    />
+  );
+};
+
+export default FormControl;
+
