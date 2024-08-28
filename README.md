@@ -34,7 +34,7 @@
       </ul>
     </li>
     <li><a href="#usage">Running the Application</a></li>
-    <li><a href="#api">API Information</a></li>
+    <li><a href="#api-information">API Information</a></li>
     <li><a href="#testing">Testing </a></li>
     <li><a href="#contribution">Contribution</a></li>
     <li><a href="#license">License</a></li>   
@@ -73,6 +73,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 | **Languages:**          | [![JavaScript][JavaScript]][JavaScript-url] |
 | **State Management:**   | [![Redux Toolkit][Redux Toolkit]][Redux-Toolkit-url] |
 | **Styling:**            | [![Sass][Sass]][Sass-url] [![Material UI][Material UI]][Material-url] [![Tailwind CSS][Tailwind CSS]][Tailwind-url] |
+| **Icons:**         | [![MUI Icons][MUI Icons]][MUI-Icons-url] |
 | **Build Tool:**         | [![Webpack][Webpack]][Webpack-url] |
 | **Testing:**            | [![Jest][Jest]][Jest-url] [![React Testing Library][React Testing Library]][React-Testing-Library-url] |
 | **Version Control:**    | [![Git][Git]][Git-url] |
@@ -145,7 +146,7 @@ This will run the app in development mode and open it in your default browser at
 
 
 <!-- ROADMAP -->
-## Roadmap
+## API Information
 
 - [x] Add Changelog
 - [x] Add back to top links
@@ -159,10 +160,22 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Testing
 
+- [x] Add Changelog
+- [x] Add back to top links
+- [ ] Add Additional Templates w/ Examples
+- [ ] Add "components" document to easily copy & paste sections of the readme
+- [ ] Multi-language Support
+    - [ ] Chinese
+    - [ ] Spanish
+
+See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
-## Contributing
+## contribution
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -193,15 +206,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
@@ -268,12 +272,5 @@ Use this space to list resources you find helpful and would like to give credit 
 [Prettier-url]: https://angular.io/
 [Git]: https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white
 [Git-url]: https://angular.io/
-
-
-
-
-
-
-
-
-
+[MUI Icons]: https://img.shields.io/badge/MUI_Icons-0081CB?style=for-the-badge&logo=mui&logoColor=white
+[MUI-Icons-url]: https://angular.io/
