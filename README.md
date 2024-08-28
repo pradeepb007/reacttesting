@@ -127,10 +127,18 @@ _Steps to install dependencies and set up the project locally:_
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+### Development Environment
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+_Commands for running the application in the development environment:_
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+1. Start the development server
+    ```sh
+    npm start
+    # or
+    yarn start
+    ```
+This will run the app in development mode and open it in your default browser at http://localhost:3000.    
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
