@@ -256,9 +256,11 @@ Use this space to list resources you find helpful and would like to give credit 
 [React Testing Library]: https://img.shields.io/badge/React--Testing--Library-E33332?style=for-the-badge&logo=testing-library&logoColor=white
 [React-Testing-Library-url]: https://angular.io/
 [ESLint]: https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white
+[ESLint-url]: https://angular.io/
 [SonarLint]: https://img.shields.io/badge/SonarLint-CB2029?style=for-the-b
+[SonarLint-url]: https://angular.io/
 [Prettier]: https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white
-
+[Prettier-url]: https://angular.io/
 [Git]: https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white
 [Git-url]: https://angular.io/
 
