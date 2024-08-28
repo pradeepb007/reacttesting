@@ -67,16 +67,28 @@ Use the `BLANK_README.md` to get started.
 
 This section should list any major frameworks/libraries used to bootstrap your project. 
 
+<div align="center">
 
 - **Frontend Framework:** [![React][React.js]][React-url]
+
 - **Languages:** [![JavaScript][JavaScript]][JavaScript-url]
+
 - **State Management:** [![Redux Toolkit][Redux Toolkit]][Redux-Toolkit-url]
-- **Styling:** [![Sass][Sass]][Sass-url] [![Material UI][Material UI]][Material-url]  [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
+
+- **Styling:** [![Sass][Sass]][Sass-url] [![Material UI][Material UI]][Material-url] [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
+
 - **Build Tool:** [![Webpack][Webpack]][Webpack-url]
-- **Testing:** [![Jest][Jest]][Jest-url] [![React Testing Librar][React Testing Librar]][React-Testing-Librar-url]
+
+- **Testing:** [![Jest][Jest]][Jest-url] [![React Testing Library][React Testing Library]][React-Testing-Library-url]
+
 - **Version Control:** [![Git][Git]][Git-url]
-- **Libraries:** [![Material React Table][Material React Table]][Material-React-Table-url],  [![React Hook Form][React Hook Form]][React-Hook-Form-url], [![Moment][Moment.js]][Moment-url]
+
+- **Libraries:** [![Material React Table][Material React Table]][Material-React-Table-url], [![React Hook Form][React Hook Form]][React-Hook-Form-url], [![Moment][Moment.js]][Moment-url]
+
 - **Others:** [![Axios][Axios]][Axios-url] - for API requests, [![ESLint][ESLint]][ESLint-url] - for code linting
+
+</div>
+
 
 
 
