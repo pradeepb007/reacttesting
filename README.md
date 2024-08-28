@@ -98,38 +98,27 @@ Required softwares or tools should be listed here:
 
 ### Installation
 
-_Below is an example of how we can install and setting up an app._
+_Steps to install dependencies and set up the project locally:_
 
-Steps to install dependencies and set up the project locally:
-```bash
-# Clone the repository
-git clone https://github.com/your-username/your-repo-name.git
-
-# Navigate to the project directory
-cd your-repo-name
-
-# Install dependencies
-npm install
-# or
-yarn install
- ```
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/github_username/repo_name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
+1. Clone the repository
+    ```sh
+    git clone https://github.com/your-username/your-repo-name.git
+    ```
+2. Navigate to the project directory
+    ```sh
+    cd your-repo-name
+    ```
+3. Install dependencies
+    ```sh
+    npm install    
+    # or
+    yarn install
+    ```
+4. Create `.env` file for  API/ENV details 
    ```js
    const API_KEY = 'ENTER YOUR API';
-   ```
-5. Change git remote url to avoid accidental pushes to base project
-   ```sh
-   git remote set-url origin github_username/repo_name
-   git remote -v # confirm the changes
+   const API_KEY = 'ENTER YOUR API';
+   const API_KEY = 'ENTER YOUR API';
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
