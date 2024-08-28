@@ -33,7 +33,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Running the Application</a></li>
+    <li><a href="#run-the-application">Run the Application</a></li>
     <li><a href="#api-information">API Information</a></li>
     <li><a href="#testing">Testing </a></li>
     <li><a href="#contribution">Contribution</a></li>
@@ -66,7 +66,7 @@ Use the `BLANK_README.md` to get started.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
+<!-- Technologies used -->
 ## Technologies Used
 
 This section should list any major frameworks/libraries used to bootstrap your project. 
@@ -128,10 +128,8 @@ _Steps to install dependencies and set up the project locally:_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- USAGE EXAMPLES -->
-## Usage
+## Run the Application
 ### Development Environment
 
 _Commands for running the application in the development environment:_
@@ -147,9 +145,7 @@ This will run the app in development mode and open it in your default browser at
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-<!-- ROADMAP -->
+<!-- API Information -->
 ## API Information
 
 - [x] Add base URL in .env file
@@ -158,45 +154,50 @@ This will run the app in development mode and open it in your default browser at
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- Testing Information -->
 ## Testing
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+_Instructions for running tests and test coverage reports:_
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+1. Run unit tests
+    ```sh
+   npm test
+    # or
+    yarn test
+    ```
+2. Run tests with coverage report
+    ```sh
+   npm run test:coverage
+    # or
+    yarn test:coverage
+    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- CONTRIBUTING -->
-## contribution
+<!-- contribution -->
+## Contribution
+_Guidelines for contributing to the project:_
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
+1. Fork the repository
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+6. Include any coding standards or guidelines, such as ESLint rules or formatting conventions.
 
-### Top contributors:
+### Top Contributors
 
-<a href="https://github.com/othneildrew/Best-README-Template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=othneildrew/Best-README-Template" alt="contrib.rocks image" />
+We want to thank all the amazing contributors to this project. Here’s a list of the top contributors:
+
+<a href="https://github.com/your-username/your-repo/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=your-username/your-repo" alt="Top Contributors" />
 </a>
+
+You can view the full list of contributors [here](https://github.com/your-username/your-repo/graphs/contributors).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-<!-- LICENSE -->
+<!-- License -->
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` `CHANGELOG.md` for more information.
@@ -251,13 +252,3 @@ Distributed under the MIT License. See `LICENSE.txt` `CHANGELOG.md` for more inf
 [Git-url]: https://angular.io/
 [MUI Icons]: https://img.shields.io/badge/MUI_Icons-0081CB?style=for-the-badge&logo=mui&logoColor=white
 [MUI-Icons-url]: https://angular.io/
-
-
-
-
-
-
-
-
-
-
