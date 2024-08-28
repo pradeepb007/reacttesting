@@ -63,7 +63,7 @@ Use the `BLANK_README.md` to get started.
 
 
 
-## Technologies & Libraries Used
+## Technologies Used
 
 This section should list any major frameworks/libraries used to bootstrap your project. 
 
