@@ -98,7 +98,20 @@ Required softwares or tools should be listed here:
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+_Below is an example of how we can install and setting up an app._
+
+Steps to install dependencies and set up the project locally:
+```bash
+# Clone the repository
+git clone https://github.com/your-username/your-repo-name.git
+
+# Navigate to the project directory
+cd your-repo-name
+
+# Install dependencies
+npm install
+# or
+yarn install
 
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
@@ -258,3 +271,12 @@ Use this space to list resources you find helpful and would like to give credit 
 [Prettier-url]: https://angular.io/
 [Git]: https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white
 [Git-url]: https://angular.io/
+
+
+
+
+
+
+
+
+
