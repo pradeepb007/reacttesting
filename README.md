@@ -112,7 +112,7 @@ cd your-repo-name
 npm install
 # or
 yarn install
-
+ ```
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```sh
