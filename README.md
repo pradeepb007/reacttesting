@@ -79,11 +79,6 @@ This section should list any major frameworks/libraries used to bootstrap your p
 | **Libraries:**          | [![Material React Table][Material React Table]][Material-React-Table-url] [![React Hook Form][React Hook Form]][React-Hook-Form-url] [![Moment][Moment.js]][Moment-url] |
 | **Others:**             | [![Axios][Axios]][Axios-url] [![Prettier][Prettier]][Prettier-url]  [![ESLint][ESLint]][ESLint-url] [![SonarLint][SonarLint]][SonarLint-url]  |
 
-
-
-
-
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -95,11 +90,11 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+Required softwares or tools should be listed here:
+- **Node.js** (v20.x or higher)
+- **React.js** (v18.x)
+- **npm** or **yarn**
+- **Visual Studio Code (VSCode)** as the preferred code editor
 
 ### Installation
 
@@ -263,12 +258,3 @@ Use this space to list resources you find helpful and would like to give credit 
 [Prettier-url]: https://angular.io/
 [Git]: https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white
 [Git-url]: https://angular.io/
-
-
-
-
-
-
-
-
-
