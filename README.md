@@ -69,14 +69,14 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 
 - **Frontend Framework:** [![React][React.js]][React-url]
-- **Languages:** JavaScript, TypeScript
+- **Languages:** [![JavaScript][JavaScript]][JavaScript-url]
 - **State Management:** [![Redux Toolkit][Redux Toolkit]][Redux-Toolkit-url]
-- **Styling:** [![Sass][Sass]][Sass-url], [![Material UI][Material UI]][Material-url] , [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
-- **Build Tool:** Webpack
-- **Testing:** Jest, React Testing Library
-- **Version Control:** Git
+- **Styling:** [![Sass][Sass]][Sass-url] [![Material UI][Material UI]][Material-url]  [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
+- **Build Tool:** [![Webpack][Webpack]][Webpack-url]
+- **Testing:** [![Jest][Jest]][Jest-url] [![React Testing Librar][React Testing Librar]][React-Testing-Librar-url]
+- **Version Control:** [![Git][Git]][Git-url]
 - **Libraries:** [![Material React Table][Material React Table]][Material-React-Table-url],  [![React Hook Form][React Hook Form]][React-Hook-Form-url], [![Moment][Moment.js]][Moment-url]
-- **Others:** Axios for API requests, ESLint for code linting
+- **Others:** [![Axios][Axios]][Axios-url] - for API requests, [![ESLint][ESLint]][ESLint-url] - for code linting
 
 
 
@@ -242,6 +242,26 @@ Use this space to list resources you find helpful and would like to give credit 
 [Moment-url]: https://angular.io/
 [Redux Toolkit]: https://img.shields.io/badge/Redux_Toolkit-764ABC?style=for-the-badge&logo=redux&logoColor=white
 [Redux-Toolkit-url]: https://angular.io/
+[JavaScript]: https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black
+[JavaScript-url]: https://angular.io/
+[Axios]: https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white
+[Axios-url]: https://angular.io/
+[Webpack]: https://img.shields.io/badge/Webpack-8DD6F9?style=for-the-badge&logo=webpack&logoColor=black
+[Webpack-url]: https://angular.io/
+[Jest]: https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white
+[Jest-url]: https://angular.io/
+[React Testing Library]: https://img.shields.io/badge/React--Testing--Library-E33332?style=for-the-badge&logo=testing-library&logoColor=white
+[React-Testing-Library-url]: https://angular.io/
+[ESLint]: https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white
+[ESLint-url]: #
+[Git]: https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white
+[Git-url]: https://angular.io/
+
+
+
+
+
+
 
 
 
