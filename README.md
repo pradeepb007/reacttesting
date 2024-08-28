@@ -24,12 +24,8 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#overview">Overview</a>
-      <ul>
-        <li><a href="#technologies-used">Technologies Used</a></li>
-      </ul>
-    </li>
+    <li><a href="#overview">Overview</a> </li>      
+    <li><a href="#technologies-used">Technologies Used</a></li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
@@ -67,18 +63,23 @@ Use the `BLANK_README.md` to get started.
 
 
 
-### Technologies Used & Libraries Used
+## Technologies Used & Libraries Used
 
 This section should list any major frameworks/libraries used to bootstrap your project. 
 
-* [![React][React.js]][React-url]
-* [![Material UI][Material UI]][Material-url]
-* [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
-* [![Sass][Sass]][Sass-url]
-* [![Material React Table][Material React Table]][Material-React-Table-url]
-* [![React Hook Form][React Hook Form]][React-Hook-Form-url]
-* [![Moment][Moment.js]][Moment-url]
-* [![Redux Toolkit][Redux Toolkit]][Redux-Toolkit-url]
+
+- **Frontend Framework:** [![React][React.js]][React-url]
+- **Languages:** JavaScript, TypeScript
+- **State Management:** [![Redux Toolkit][Redux Toolkit]][Redux-Toolkit-url]
+- **Styling:** [![Sass][Sass]][Sass-url], [![Material UI][Material UI]][Material-url] , [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
+- **Build Tool:** Webpack
+- **Testing:** Jest, React Testing Library
+- **Version Control:** Git
+- **Libraries:** [![Material React Table][Material React Table]][Material-React-Table-url],  [![React Hook Form][React Hook Form]][React-Hook-Form-url], [![Moment][Moment.js]][Moment-url]
+- **Others:** Axios for API requests, ESLint for code linting
+
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
