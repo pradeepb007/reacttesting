@@ -76,7 +76,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 | **Build Tool:**         | [![Webpack][Webpack]][Webpack-url] |
 | **Testing:**            | [![Jest][Jest]][Jest-url] [![React Testing Library][React Testing Library]][React-Testing-Library-url] |
 | **Version Control:**    | [![Git][Git]][Git-url] |
-| **Libraries:**          | [![Material React Table][Material React Table]][Material-React-Table-url], [![React Hook Form][React Hook Form]][React-Hook-Form-url], [![Moment][Moment.js]][Moment-url] |
+| **Libraries:**          | [![Material React Table][Material React Table]][Material-React-Table-url] [![React Hook Form][React Hook Form]][React-Hook-Form-url] [![Moment][Moment.js]][Moment-url] |
 | **Others:**             | [![Axios][Axios]][Axios-url] [![Prettier][Prettier]][Prettier-url]  [![ESLint][ESLint]][ESLint-url] [![SonarLint][SonarLint]][SonarLint-url]  |
 
 
@@ -257,7 +257,7 @@ Use this space to list resources you find helpful and would like to give credit 
 [React-Testing-Library-url]: https://angular.io/
 [ESLint]: https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white
 [ESLint-url]: https://angular.io/
-[SonarLint]: https://img.shields.io/badge/SonarLint-CB2029?style=for-the-b
+[SonarLint]: https://img.shields.io/badge/SonarLint-CB2029?style=for-the-badge&logo=sonarlint&logoColor=white
 [SonarLint-url]: https://angular.io/
 [Prettier]: https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white
 [Prettier-url]: https://angular.io/
