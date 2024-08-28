@@ -63,11 +63,12 @@ Use the `BLANK_README.md` to get started.
 
 
 
-## Technologies Used & Libraries Used
+## Technologies & Libraries Used
 
 This section should list any major frameworks/libraries used to bootstrap your project. 
 
-| **Frontend Framework:** | [![React][React.js]][React-url] |
+| **Frontend Framework:** | [![React][React.js]][React-url]  |
+|-------------------------|--------------------------------|
 | **Languages:**          | [![JavaScript][JavaScript]][JavaScript-url] |
 | **State Management:**   | [![Redux Toolkit][Redux Toolkit]][Redux-Toolkit-url] |
 | **Styling:**            | [![Sass][Sass]][Sass-url] [![Material UI][Material UI]][Material-url] [![Tailwind CSS][Tailwind CSS]][Tailwind-url] |
