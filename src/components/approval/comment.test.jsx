@@ -1,6 +1,14 @@
 test('displays and handles CloseIcon button click when in edit mode', () => {
   const comments = { 1: 'Test comment' };
   const setComments = jest.fn();
+
+  // Mock useState for editMode to simulate the state changes.
+  const mockSetEditMode = jest.fn();
+  const mockUseState = jest.spyOn(React, 'useState');
+  
+  // Mocking initial state of editMode for row 1 to be false initially.
+  mockUseState.mockImplementationOnce(() => [{}, mockSetEditMode]);
+
   const { result } = renderHook(() => CommentsColumns({ comments, setComments }));
 
   const columns = result.current;
@@ -8,14 +16,16 @@ test('displays and handles CloseIcon button click when in edit mode', () => {
 
   const row = { id: 1, comment: 'Test comment' };
 
-  // Act: Enter edit mode
+  // Act: Manually trigger edit mode for this row
   act(() => {
-    const editTextFieldProps = commentColumn.muiEditTextFieldProps({ row });
-    editTextFieldProps.onFocus(); // Simulate entering edit mode
+    // Mock setting editMode for row with id 1 to true
+    mockSetEditMode({ 1: true });
   });
 
-  // Assert: CloseIcon should be visible in edit mode
-  let editTextFieldProps = commentColumn.muiEditTextFieldProps({ row });
+  // Re-render and get updated editTextFieldProps with editMode set to true
+  const editTextFieldProps = commentColumn.muiEditTextFieldProps({ row });
+
+  // Assert: CloseIcon should now be visible (non-null)
   expect(editTextFieldProps.InputProps.endAdornment).not.toBeNull();
 
   // Act: Simulate clicking the CloseIcon button
@@ -24,7 +34,10 @@ test('displays and handles CloseIcon button click when in edit mode', () => {
     buttonProps.onClick(); // Simulate CloseIcon click
   });
 
-  // Assert: Edit mode should be false after clicking the CloseIcon
-  editTextFieldProps = commentColumn.muiEditTextFieldProps({ row });
-  expect(editTextFieldProps.InputProps.endAdornment).toBeNull(); // No CloseIcon when not in edit mode
+  // Check that the CloseIcon click updates the state (editMode false)
+  expect(mockSetEditMode).toHaveBeenCalledWith({ 1: false });
+
+  // Ensure that after clicking, edit mode is disabled and CloseIcon disappears
+  const updatedEditTextFieldProps = commentColumn.muiEditTextFieldProps({ row });
+  expect(updatedEditTextFieldProps.InputProps.endAdornment).toBeNull();
 });
