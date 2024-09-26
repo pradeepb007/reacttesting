@@ -1,43 +1,53 @@
+import React from 'react'; // Ensure React is imported for hooks
+import { renderHook, act } from '@testing-library/react-hooks'; // React hook testing library
+import CommentsColumns from './CommentsColumns'; // Adjust to your correct file path
+
 test('displays and handles CloseIcon button click when in edit mode', () => {
   const comments = { 1: 'Test comment' };
   const setComments = jest.fn();
 
-  // Mock useState for editMode to simulate the state changes.
+  // Mock useState for editMode and manually manage the state changes.
   const mockSetEditMode = jest.fn();
   const mockUseState = jest.spyOn(React, 'useState');
-  
-  // Mocking initial state of editMode for row 1 to be false initially.
-  mockUseState.mockImplementationOnce(() => [{}, mockSetEditMode]);
 
-  const { result } = renderHook(() => CommentsColumns({ comments, setComments }));
+  // Initial mock state with editMode = false
+  let editMode = {};
+  mockUseState.mockImplementation(() => [editMode, mockSetEditMode]);
+
+  // Step 1: Render the hook
+  const { result, rerender } = renderHook(() => CommentsColumns({ comments, setComments }));
 
   const columns = result.current;
   const commentColumn = columns.find((col) => col.accessorKey === 'comment');
-
   const row = { id: 1, comment: 'Test comment' };
 
-  // Act: Manually trigger edit mode for this row
+  // Step 2: Simulate entering edit mode by updating state to true for row 1
   act(() => {
-    // Mock setting editMode for row with id 1 to true
-    mockSetEditMode({ 1: true });
+    editMode = { 1: true };  // Manually change editMode for row 1 to true
+    rerender();              // Rerender after the state change
   });
 
-  // Re-render and get updated editTextFieldProps with editMode set to true
+  // Step 3: Fetch the updated props after editMode is set to true
   const editTextFieldProps = commentColumn.muiEditTextFieldProps({ row });
 
-  // Assert: CloseIcon should now be visible (non-null)
+  // Step 4: Assert: CloseIcon should now be visible (non-null)
   expect(editTextFieldProps.InputProps.endAdornment).not.toBeNull();
 
-  // Act: Simulate clicking the CloseIcon button
+  // Step 5: Simulate clicking the CloseIcon button
   act(() => {
     const buttonProps = editTextFieldProps.InputProps.endAdornment.props.children.props;
     buttonProps.onClick(); // Simulate CloseIcon click
   });
 
-  // Check that the CloseIcon click updates the state (editMode false)
+  // Step 6: Check that the CloseIcon click updates the state to set editMode to false
   expect(mockSetEditMode).toHaveBeenCalledWith({ 1: false });
 
-  // Ensure that after clicking, edit mode is disabled and CloseIcon disappears
+  // Step 7: Rerender and ensure CloseIcon disappears (editMode is now false)
+  act(() => {
+    editMode = { 1: false };  // Manually change editMode for row 1 to false
+    rerender();
+  });
+
   const updatedEditTextFieldProps = commentColumn.muiEditTextFieldProps({ row });
-  expect(updatedEditTextFieldProps.InputProps.endAdornment).toBeNull();
+  expect(updatedEditTextFieldProps.InputProps.endAdornment).toBeNull(); // CloseIcon should be null
 });
